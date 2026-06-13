@@ -28,9 +28,14 @@ public interface ChallengeSignupService extends IService<ChallengeSignup> {
     void signup(Long challengeId, Long userId);
 
     /**
-     * 确认/拒绝报名
+     * 确认报名（仅发起人）
      */
-    void handleSignup(Long signupId, Integer status);
+    void confirmSignup(Long challengeId, Long userId, Long signupId);
+
+    /**
+     * 拒绝报名（仅发起人）
+     */
+    void rejectSignup(Long challengeId, Long userId, Long signupId);
 }
 
 

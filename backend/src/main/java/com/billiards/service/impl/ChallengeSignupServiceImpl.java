@@ -19,6 +19,7 @@
 
 package com.billiards.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.billiards.common.BusinessException;
 import com.billiards.common.Constants;
@@ -51,6 +52,10 @@ public class ChallengeSignupServiceImpl extends ServiceImpl<ChallengeSignupMappe
         if (challenge.getStatus() != Constants.CHALLENGE_PENDING) {
             throw new BusinessException("该约战已结束，无法报名");
         }
+        // 发起人不能报名自己的约战
+        if (challenge.getInitiatorId().equals(userId)) {
+            throw new BusinessException("发起人无需报名");
+        }
 
         // 检查是否已报名
         Long count = lambdaQuery()
@@ -70,25 +75,62 @@ public class ChallengeSignupServiceImpl extends ServiceImpl<ChallengeSignupMappe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void handleSignup(Long signupId, Integer status) {
+    public void confirmSignup(Long challengeId, Long userId, Long signupId) {
+        // 校验发起人身份
+        Challenge challenge = challengeMapper.selectById(challengeId);
+        if (challenge == null) {
+            throw new BusinessException("约战不存在");
+        }
+        if (!challenge.getInitiatorId().equals(userId)) {
+            throw new BusinessException("只有发起人可以确认报名");
+        }
+
         ChallengeSignup signup = getById(signupId);
         if (signup == null) {
             throw new BusinessException("报名记录不存在");
         }
+        if (!signup.getChallengeId().equals(challengeId)) {
+            throw new BusinessException("报名记录不属于该约战");
+        }
         if (signup.getStatus() != Constants.SIGNUP_PENDING) {
             throw new BusinessException("该报名已处理");
         }
-        signup.setStatus(status);
+
+        signup.setStatus(Constants.SIGNUP_CONFIRMED);
         updateById(signup);
 
-        // 确认报名后更新约战状态
-        if (status == Constants.SIGNUP_CONFIRMED) {
-            Challenge challenge = challengeMapper.selectById(signup.getChallengeId());
-            if (challenge != null && challenge.getStatus() == Constants.CHALLENGE_PENDING) {
-                challenge.setStatus(Constants.CHALLENGE_IN_PROGRESS);
-                challengeMapper.updateById(challenge);
-            }
+        // 确认报名后更新约战状态为进行中
+        if (challenge.getStatus() == Constants.CHALLENGE_PENDING) {
+            challenge.setStatus(Constants.CHALLENGE_IN_PROGRESS);
+            challengeMapper.updateById(challenge);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void rejectSignup(Long challengeId, Long userId, Long signupId) {
+        // 校验发起人身份
+        Challenge challenge = challengeMapper.selectById(challengeId);
+        if (challenge == null) {
+            throw new BusinessException("约战不存在");
+        }
+        if (!challenge.getInitiatorId().equals(userId)) {
+            throw new BusinessException("只有发起人可以拒绝报名");
+        }
+
+        ChallengeSignup signup = getById(signupId);
+        if (signup == null) {
+            throw new BusinessException("报名记录不存在");
+        }
+        if (!signup.getChallengeId().equals(challengeId)) {
+            throw new BusinessException("报名记录不属于该约战");
+        }
+        if (signup.getStatus() != Constants.SIGNUP_PENDING) {
+            throw new BusinessException("该报名已处理");
+        }
+
+        signup.setStatus(Constants.SIGNUP_REJECTED);
+        updateById(signup);
     }
 }
 

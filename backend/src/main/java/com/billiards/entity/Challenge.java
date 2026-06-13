@@ -45,6 +45,22 @@ public class Challenge {
 
     private Long winnerId;
 
+    /** 发起人昵称（非数据库字段） */
+    @TableField(exist = false)
+    private String initiatorName;
+
+    /** 发起人头像（非数据库字段） */
+    @TableField(exist = false)
+    private String initiatorAvatar;
+
+    /** 球房名称（非数据库字段） */
+    @TableField(exist = false)
+    private String ballroomName;
+
+    /** 球房地址（非数据库字段） */
+    @TableField(exist = false)
+    private String ballroomAddress;
+
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
