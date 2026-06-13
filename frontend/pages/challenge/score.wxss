@@ -1,0 +1,191 @@
+/* ============================================================
+   对战记分样式
+   ============================================================ */
+.page {
+  padding: 16px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1a2a4a 0%, #2a3f6a 40%, var(--bg-color) 40%);
+}
+
+/* 对战双方信息 */
+.match-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0 20px;
+  gap: 20px;
+}
+
+.player-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.player-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 8px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.player-avatar.opponent {
+  background: var(--primary-light);
+}
+
+.player-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.player-level {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.vs-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* 比分板 */
+.scoreboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  gap: 30px;
+}
+
+.score-side {
+  text-align: center;
+}
+
+.score-num {
+  font-size: 56px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1;
+}
+
+.score-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score-colon {
+  font-size: 32px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+
+/* 比赛信息 */
+.match-info {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.match-info-item {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+/* 得分操作 */
+.score-actions {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+}
+
+.score-btn-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.score-btn {
+  flex: 1;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.score-btn.opponent-btn {
+  background: var(--primary-light);
+}
+
+.score-btn.undo {
+  flex: 0 0 60px;
+  background: #f5f5f5;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 14px 0;
+}
+
+.finish-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.finish-btn[disabled] {
+  opacity: 0.6;
+}
+
+/* 只读提示 */
+.readonly-tip {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  background: #fff;
+  border-radius: 12px;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.6);
+}

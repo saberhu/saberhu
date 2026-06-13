@@ -1,0 +1,71 @@
+<!-- ============================================================
+     个人中心 - 头像、段位、胜率、战绩、收藏、设置
+     ============================================================ -->
+<view class="page">
+  <view wx:if="{{loading}}" class="loading-state">加载中...</view>
+
+  <block wx:else>
+    <!-- 用户信息头部 -->
+    <view class="user-header">
+      <view class="user-avatar">{{user.nickname ? user.nickname[0] : '?'}}</view>
+      <view class="user-info">
+        <text class="user-nickname">{{user.nickname || '未设置昵称'}}</text>
+        <text class="user-level level-tag">{{getLevelName(user.levelScore)}}</text>
+      </view>
+      <text class="user-credit">信用分：{{user.creditScore || 100}}</text>
+    </view>
+
+    <!-- 数据统计 -->
+    <view class="stats-card">
+      <view class="stat-item">
+        <text class="stat-num">{{stats.totalGames}}</text>
+        <text class="stat-label">总场次</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num accent">{{stats.wins}}</text>
+        <text class="stat-label">胜场</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num">{{stats.losses}}</text>
+        <text class="stat-label">负场</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num">{{stats.winRate}}%</text>
+        <text class="stat-label">胜率</text>
+      </view>
+    </view>
+
+    <!-- Tab切换 -->
+    <view class="tabs">
+      <view class="tab {{activeTab === 'challenges' ? 'active' : ''}}" bindtap="switchTab" data-tab="challenges">我的约战</view>
+      <view class="tab {{activeTab === 'favorites' ? 'active' : ''}}" bindtap="switchTab" data-tab="favorites">收藏球房</view>
+    </view>
+
+    <!-- 我的约战 -->
+    <view wx:if="{{activeTab === 'challenges'}}" class="tab-content">
+      <view wx:if="{{myChallenges.length === 0}}" class="empty-state">暂无约战记录</view>
+      <view wx:for="{{myChallenges}}" wx:key="id" class="list-card" bindtap="goChallenge" data-id="{{item.id}}">
+        <view class="challenge-top">
+          <text class="ball-type-tag">{{item.ballType === 1 ? '中式八球' : item.ballType === 2 ? '斯诺克' : '九球'}}</text>
+          <text class="tag {{item.status === 0 ? 'tag-pending' : item.status === 1 ? 'tag-active' : 'tag-done'}}">
+            {{item.status === 0 ? '待应战' : item.status === 1 ? '进行中' : '已结束'}}
+          </text>
+        </view>
+        <text class="challenge-time">{{formatTime(item.startTime)}}</text>
+        <text class="challenge-ballroom">{{item.ballroomName || '待定'}}</text>
+      </view>
+    </view>
+
+    <!-- 收藏球房 -->
+    <view wx:if="{{activeTab === 'favorites'}}" class="tab-content">
+      <view wx:if="{{favorites.length === 0}}" class="empty-state">暂无收藏球房</view>
+      <view wx:for="{{favorites}}" wx:key="id" class="list-card ballroom-card" bindtap="goBallroom" data-id="{{item.id}}">
+        <view class="ballroom-top">
+          <text class="ballroom-name">{{item.name}}</text>
+          <text class="ballroom-rating">⭐ {{item.rating || 0}}</text>
+        </view>
+        <text class="ballroom-address">{{item.address}}</text>
+      </view>
+    </view>
+  </block>
+</view>

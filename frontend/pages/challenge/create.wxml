@@ -9,61 +9,80 @@
 
 
 
-
-
-<!-- 创建约战 -->
+<!-- ============================================================
+     发起约战 - 表单页
+     ============================================================ -->
 <view class="page">
-  <view class="form-group">
-    <text class="label">选择球房</text>
-    <picker bindchange="onBallroomChange" range="{{ballrooms}}" range-key="name" value="{{ballroomIndex}}">
-      <view class="picker">{{ballroomName || '请选择球房'}}</view>
-    </picker>
+
+  <view class="form-card">
+    <!-- 选择球房 -->
+    <view class="form-group">
+      <text class="label">选择球房</text>
+      <picker bindchange="onBallroomChange" range="{{ballrooms}}" range-key="name" value="{{ballroomIndex}}">
+        <view class="picker {{ballroomName ? '' : 'placeholder'}}">
+          {{ballroomName || '请选择球房'}}
+          <text class="picker-arrow">&gt;</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 球种 -->
+    <view class="form-group">
+      <text class="label">球种</text>
+      <picker mode="selector" range="{{ballTypes}}" range-key="label" bindchange="onBallTypeChange">
+        <view class="picker">
+          {{ballTypes[ballType - 1].label}}
+          <text class="picker-arrow">&gt;</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 赛制 -->
+    <view class="form-group">
+      <text class="label">赛制</text>
+      <picker mode="selector" range="{{formatTypes}}" range-key="label" bindchange="onFormatTypeChange">
+        <view class="picker">
+          {{formatTypes[formatType - 1].label}}
+          <text class="picker-arrow">&gt;</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 赛制值 -->
+    <view class="form-group">
+      <text class="label">赛制值（局数/分钟）</text>
+      <input class="input" type="number" value="{{formatValue}}" bindinput="onFormatValueInput" placeholder="如：9" />
+    </view>
+
+    <!-- 开始时间 -->
+    <view class="form-group">
+      <text class="label">开始时间</text>
+      <picker mode="date" bindchange="onStartTimeChange">
+        <view class="picker {{startTimeDisplay ? '' : 'placeholder'}}">
+          {{startTimeDisplay || '请选择日期'}}
+          <text class="picker-arrow">&gt;</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 最大人数 -->
+    <view class="form-group">
+      <text class="label">最大人数</text>
+      <input class="input" type="number" value="{{maxPlayers}}" bindinput="onMaxPlayersInput" placeholder="最少2人" />
+    </view>
+
+    <!-- 备注 -->
+    <view class="form-group">
+      <text class="label">备注（可选）</text>
+      <textarea class="textarea" value="{{remark}}" bindinput="onRemarkInput" placeholder="补充说明，如：需要自带球杆" />
+    </view>
   </view>
 
-  <view class="form-group">
-    <text class="label">球种</text>
-    <picker mode="selector" range="{{ballTypes}}" range-key="label" bindchange="onBallTypeChange">
-      <view class="picker">{{ballTypes[ballType - 1].label}}</view>
-    </picker>
-  </view>
+  <button class="submit-btn" bindtap="submit" disabled="{{submitting}}">
+    {{submitting ? '提交中...' : '发起约战'}}
+  </button>
 
-  <view class="form-group">
-    <text class="label">赛制</text>
-    <picker mode="selector" range="{{formatTypes}}" range-key="label" bindchange="onFormatTypeChange">
-      <view class="picker">{{formatTypes[formatType - 1].label}}</view>
-    </picker>
-  </view>
-
-  <view class="form-group">
-    <text class="label">赛制值</text>
-    <input class="input" type="number" value="{{formatValue}}" bindinput="onFormatValueInput" placeholder="如：9局" />
-  </view>
-
-  <view class="form-group">
-    <text class="label">开始时间</text>
-    <picker mode="date" bindchange="onStartTimeChange">
-      <view class="picker">{{startTime || '请选择日期'}}</view>
-    </picker>
-  </view>
-
-  <view class="form-group">
-    <text class="label">最大人数</text>
-    <input class="input" type="number" value="{{maxPlayers}}" bindinput="onMaxPlayersInput" placeholder="最少2人" />
-  </view>
-
-  <view class="form-group">
-    <text class="label">备注</text>
-    <textarea class="textarea" value="{{remark}}" bindinput="onRemarkInput" placeholder="可选：补充说明" />
-  </view>
-
-  <button class="submit-btn" bindtap="submit">发起约战</button>
 </view>
-
-
-
-
-
-
 
 
 

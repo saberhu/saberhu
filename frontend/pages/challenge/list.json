@@ -1,29 +1,14 @@
 
 
 
-
-
-
-
-
-
-
-
-
 {
-  "navigationBarTitleText": "约战详情",
+  "navigationBarTitleText": "约战广场",
   "navigationBarBackgroundColor": "#1a2a4a",
   "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
   "usingComponents": {}
 }
-
-
-
-
-
-
-
-
 
 
 

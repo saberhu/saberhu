@@ -9,6 +9,8 @@
 
 {
   "navigationBarTitleText": "发起约战",
+  "navigationBarBackgroundColor": "#1a2a4a",
+  "navigationBarTextStyle": "white",
   "usingComponents": {}
 }
 

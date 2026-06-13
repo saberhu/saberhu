@@ -1,0 +1,63 @@
+<!-- ============================================================
+     对战记分 - 实时比分、得分按钮、结束比赛
+     ============================================================ -->
+<view class="page">
+  <view wx:if="{{loading}}" class="loading-state">加载中...</view>
+
+  <block wx:else>
+    <!-- 对战双方信息 -->
+    <view class="match-header">
+      <view class="player-side">
+        <view class="player-avatar">{{challenge.initiatorName ? challenge.initiatorName[0] : '?'}}</view>
+        <text class="player-name">{{challenge.initiatorName || '发起人'}}</text>
+        <text class="player-level level-tag">{{getLevelName(challenge.initiatorLevelScore)}}</text>
+      </view>
+      <view class="vs-badge">VS</view>
+      <view class="player-side">
+        <view class="player-avatar opponent">{{challenge.opponentName ? challenge.opponentName[0] : '?'}}</view>
+        <text class="player-name">{{challenge.opponentName || '对手'}}</text>
+        <text class="player-level level-tag">{{getLevelName(challenge.opponentLevelScore)}}</text>
+      </view>
+    </view>
+
+    <!-- 比分展示 -->
+    <view class="scoreboard">
+      <view class="score-side">
+        <text class="score-num">{{scoreInitiator}}</text>
+      </view>
+      <view class="score-divider">
+        <text class="score-colon">:</text>
+        <text class="score-label">比分</text>
+      </view>
+      <view class="score-side">
+        <text class="score-num">{{scoreOpponent}}</text>
+      </view>
+    </view>
+
+    <!-- 比赛信息 -->
+    <view class="match-info">
+      <text class="match-info-item">🎱 {{challenge.ballType === 1 ? '中式八球' : challenge.ballType === 2 ? '斯诺克' : '九球'}}</text>
+      <text class="match-info-item">📋 {{challenge.formatType === 1 ? '局数制' : '时间制'}} {{challenge.formatValue}}{{challenge.formatType === 1 ? '局' : '分钟'}}</text>
+    </view>
+
+    <!-- 操作按钮（仅发起人可操作） -->
+    <view wx:if="{{isInitiator}}" class="score-actions">
+      <view class="score-btn-group">
+        <button class="score-btn" bindtap="scoreForInitiator">+ {{challenge.initiatorName || '发起人'}} 得分</button>
+        <button class="score-btn undo" bindtap="undoInitiatorScore">撤销</button>
+      </view>
+      <view class="score-btn-group">
+        <button class="score-btn opponent-btn" bindtap="scoreForOpponent">+ {{challenge.opponentName || '对手'}} 得分</button>
+        <button class="score-btn undo" bindtap="undoOpponentScore">撤销</button>
+      </view>
+      <button class="finish-btn" bindtap="finishMatch" disabled="{{submitting}}">
+        {{submitting ? '提交中...' : '结束比赛并提交比分'}}
+      </button>
+    </view>
+
+    <!-- 非发起人只读提示 -->
+    <view wx:if="{{!isInitiator}}" class="readonly-tip">
+      <text>仅发起人可操作记分</text>
+    </view>
+  </block>
+</view>

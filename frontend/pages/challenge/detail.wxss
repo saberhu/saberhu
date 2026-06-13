@@ -13,15 +13,19 @@
 
 
 
-/* 约战详情样式 */
+/* ============================================================
+   约战详情样式
+   ============================================================ */
 .page {
   padding: 16px;
+  padding-bottom: 100px;
 }
 
 .detail-card {
   background: #fff;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 16px;
+  box-shadow: var(--card-shadow);
 }
 
 .card-header {
@@ -33,23 +37,73 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-.ball-type {
-  font-size: 18px;
-  font-weight: bold;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.status {
-  font-size: 13px;
-  padding: 3px 10px;
-  border-radius: 12px;
-  background: #e8f5e9;
-  color: var(--theme-color);
+.ball-type {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.challenge-id {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* 发起人信息 */
+.initiator-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.initiator-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-right: 12px;
+}
+
+.initiator-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.initiator-name {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.initiator-level {
+  margin-top: 2px;
+  align-self: flex-start;
+}
+
+/* 信息列表 */
+.info-list {
+  margin-bottom: 12px;
 }
 
 .info-row {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.info-row:last-child {
+  border-bottom: none;
 }
 
 .info-label {
@@ -60,17 +114,188 @@
 .info-value {
   font-size: 14px;
   color: var(--text-color);
+  text-align: right;
+  max-width: 60%;
 }
 
-.signup-btn {
-  background: var(--theme-color);
+/* 比分展示 */
+.score-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.score-title {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.score-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.score-side {
+  text-align: center;
+}
+
+.score-name {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.score-num {
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.score-vs {
+  font-size: 20px;
+  color: var(--text-light);
+}
+
+/* 报名列表 */
+.section {
+  margin-top: 16px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.signup-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  box-shadow: var(--card-shadow);
+}
+
+.signup-user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.signup-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.signup-name {
+  font-size: 14px;
+  flex: 1;
+}
+
+.signup-status {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.signup-status.approved {
+  background: #e8f5e9;
+  color: var(--success);
+}
+
+.signup-status.pending {
+  background: #fff3e0;
+  color: var(--accent);
+}
+
+.signup-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 6px 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.action-btn.confirm {
+  background: var(--primary);
+  color: #fff;
+}
+
+.action-btn.reject {
+  background: #f5f5f5;
+  color: var(--text-secondary);
+}
+
+/* 操作按钮 */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  background: #fff;
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.action-btn-primary {
+  width: 100%;
+  background: var(--primary);
   color: #fff;
   border: none;
-  border-radius: 4px;
-  padding: 12px;
+  border-radius: 8px;
+  padding: 14px;
   font-size: 16px;
+  font-weight: 500;
+}
+
+.action-btn-accent {
   width: 100%;
-  margin-top: 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.action-btn-danger {
+  width: 100%;
+  background: #fff;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+}
+
+.status-text {
+  display: block;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  padding: 14px 0;
 }
 
 .loading-state {

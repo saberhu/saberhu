@@ -1,15 +1,8 @@
-
-
-
-
-
-
-
-
-
 // ============================================================
-// 球房详情页
+// 球房详情 - 轮播图、基本信息、导航、收藏、评价
 // ============================================================
+const { get, post } = require('../../utils/request');
+const { openNavigation } = require('../../utils/amap');
 const app = getApp();
 
 Page({
@@ -17,7 +10,11 @@ Page({
     ballroom: null,
     reviews: [],
     isFavorite: false,
-    loading: true
+    loading: true,
+    /** 评价表单 */
+    showReviewForm: false,
+    reviewRating: 5,
+    reviewContent: ''
   },
 
   onLoad(options) {
@@ -25,60 +22,126 @@ Page({
     this.loadDetail();
   },
 
-  loadDetail() {
-    const id = this.data.id;
-
-    wx.request({
-      url: `${app.globalData.baseUrl}/ballroom/${id}`,
-      success: (res) => {
-        if (res.data.code === 200) {
-          this.setData({ ballroom: res.data.data });
-        }
-      }
-    });
-
-    wx.request({
-      url: `${app.globalData.baseUrl}/ballroom/${id}/reviews?page=1&size=10`,
-      success: (res) => {
-        if (res.data.code === 200) {
-          this.setData({ reviews: res.data.data.records || [] });
-        }
-      },
-      complete: () => {
-        this.setData({ loading: false });
-      }
-    });
+  onShow() {
+    if (this.data.id) {
+      this.loadDetail();
+    }
   },
 
-  toggleFavorite() {
+  async loadDetail() {
+    this.setData({ loading: true });
+    try {
+      const [ballroom, reviews] = await Promise.all([
+        get(`/ballroom/${this.data.id}`),
+        get(`/ballroom/${this.data.id}/reviews`, { page: 1, size: 20 }, { showLoading: false })
+      ]);
+
+      // 检查收藏状态
+      const userId = wx.getStorageSync('userId');
+      let isFavorite = false;
+      if (userId) {
+        try {
+          const favRes = await get(`/ballroom/favorite/check`, { userId, ballroomId: this.data.id }, { showLoading: false });
+          isFavorite = favRes.favorited || false;
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      this.setData({
+        ballroom,
+        reviews: reviews.records || [],
+        isFavorite
+      });
+    } catch (err) {
+      console.error('加载球房详情失败', err);
+    } finally {
+      this.setData({ loading: false });
+    }
+  },
+
+  /** 一键导航 */
+  goNavigation() {
+    if (this.data.ballroom.latitude && this.data.ballroom.longitude) {
+      openNavigation(
+        this.data.ballroom.latitude,
+        this.data.ballroom.longitude,
+        this.data.ballroom.name
+      );
+    } else {
+      wx.showToast({ title: '暂无位置信息', icon: 'none' });
+    }
+  },
+
+  /** 收藏/取消收藏 */
+  async toggleFavorite() {
     const userId = wx.getStorageSync('userId');
     if (!userId) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       return;
     }
-
-    wx.request({
-      url: `${app.globalData.baseUrl}/ballroom/favorite`,
-      method: 'POST',
-      data: { userId, ballroomId: this.data.id },
-      success: () => {
-        this.setData({ isFavorite: !this.data.isFavorite });
-        wx.showToast({ title: this.data.isFavorite ? '已收藏' : '已取消收藏', icon: 'success' });
-      }
-    });
+    try {
+      await post('/ballroom/favorite', { userId, ballroomId: this.data.id });
+      this.setData({ isFavorite: !this.data.isFavorite });
+      wx.showToast({
+        title: this.data.isFavorite ? '已收藏' : '已取消收藏',
+        icon: 'success'
+      });
+    } catch (err) {
+      console.error('操作失败', err);
+    }
   },
 
+  /** 发起约战 */
   goCreateChallenge() {
     wx.navigateTo({
       url: `/pages/challenge/create?ballroomId=${this.data.id}`
     });
+  },
+
+  /** 显示评价表单 */
+  showReview() {
+    const userId = wx.getStorageSync('userId');
+    if (!userId) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      return;
+    }
+    this.setData({ showReviewForm: true, reviewRating: 5, reviewContent: '' });
+  },
+
+  /** 隐藏评价表单 */
+  hideReview() {
+    this.setData({ showReviewForm: false });
+  },
+
+  /** 选择评分 */
+  onRatingChange(e) {
+    this.setData({ reviewRating: e.currentTarget.dataset.rating });
+  },
+
+  /** 评价内容 */
+  onReviewInput(e) {
+    this.setData({ reviewContent: e.detail.value });
+  },
+
+  /** 提交评价 */
+  async submitReview() {
+    if (!this.data.reviewContent.trim()) {
+      wx.showToast({ title: '请输入评价内容', icon: 'none' });
+      return;
+    }
+    try {
+      await post('/ballroom/review', {
+        userId: wx.getStorageSync('userId'),
+        ballroomId: this.data.id,
+        rating: this.data.reviewRating,
+        content: this.data.reviewContent.trim()
+      });
+      wx.showToast({ title: '评价成功', icon: 'success' });
+      this.setData({ showReviewForm: false });
+      this.loadDetail();
+    } catch (err) {
+      console.error('评价失败', err);
+    }
   }
 });
-
-
-
-
-
-
-
-

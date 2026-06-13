@@ -1,0 +1,72 @@
+
+
+<!-- ============================================================
+     约战广场 - 球种筛选、卡片列表、悬浮发起按钮
+     ============================================================ -->
+<view class="page">
+
+  <!-- 球种筛选Tab -->
+  <view class="filter-tabs">
+    <view
+      wx:for="{{ballTypeTabs}}"
+      wx:key="value"
+      class="filter-tab {{currentBallType === item.value ? 'active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onBallTypeChange"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <!-- 约战列表 -->
+  <view class="list-wrap">
+    <view wx:if="{{challenges.length === 0 && !loading}}" class="empty-state">
+      <text class="empty-icon">🎱</text>
+      <text>暂无约战，快去发起吧</text>
+    </view>
+    <view
+      wx:for="{{challenges}}"
+      wx:key="id"
+      class="list-card challenge-card"
+      bindtap="goDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="challenge-top">
+        <view class="challenge-user">
+          <view class="challenge-avatar">{{item.initiatorName ? item.initiatorName[0] : '?'}}</view>
+          <view class="challenge-user-info">
+            <text class="challenge-nickname">{{item.initiatorName || '未知'}}</text>
+            <text class="challenge-level level-tag">{{getLevelName(item.initiatorLevelScore)}}</text>
+          </view>
+        </view>
+        <text class="tag {{item.status === 0 ? 'tag-pending' : item.status === 1 ? 'tag-active' : 'tag-done'}}">
+          {{item.status === 0 ? '待应战' : item.status === 1 ? '进行中' : '已结束'}}
+        </text>
+      </view>
+      <view class="challenge-tags">
+        <text class="tag tag-pending">{{item.ballType === 1 ? '中式八球' : item.ballType === 2 ? '斯诺克' : '九球'}}</text>
+        <text class="tag tag-active">{{item.formatType === 1 ? '局数制' : '时间制'}} {{item.formatValue}}</text>
+      </view>
+      <view class="challenge-info">
+        <text class="info-item">📍 {{item.ballroomName || '待定'}}</text>
+        <text class="info-item">🕐 {{formatTime(item.startTime)}}</text>
+      </view>
+      <view class="challenge-bottom">
+        <text class="challenge-remark" wx:if="{{item.remark}}">{{item.remark}}</text>
+        <text class="challenge-signup">👥 {{item.signupCount || 0}}/{{item.maxPlayers || 2}}人已报名</text>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view wx:if="{{loading}}" class="loading-state">加载中...</view>
+    <view wx:if="{{!hasMore && challenges.length > 0}}" class="loading-state">— 没有更多了 —</view>
+  </view>
+
+  <!-- 悬浮发起按钮 -->
+  <view class="float-btn" bindtap="goCreate">
+    <text class="float-btn-icon">+</text>
+  </view>
+
+</view>
+
+

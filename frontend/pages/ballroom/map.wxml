@@ -1,0 +1,50 @@
+<!-- ============================================================
+     球房地图 - 高德地图展示、列表/地图切换、点击跳转详情
+     ============================================================ -->
+<view class="page">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索球房..." value="{{keyword}}" bindconfirm="onSearch" confirm-type="search" />
+    </view>
+    <text class="switch-btn" bindtap="switchView">{{viewMode === 'map' ? '列表' : '地图'}}</text>
+  </view>
+
+  <!-- 地图视图 -->
+  <view wx:if="{{viewMode === 'map'}}" class="map-wrap">
+    <map
+      class="map"
+      latitude="{{latitude}}"
+      longitude="{{longitude}}"
+      markers="{{markers}}"
+      bindmarkertap="onMarkerTap"
+      show-location="{{true}}"
+      scale="14"
+    ></map>
+  </view>
+
+  <!-- 列表视图 -->
+  <view wx:if="{{viewMode === 'list'}}" class="list-wrap">
+    <view wx:if="{{ballrooms.length === 0 && !loading}}" class="empty-state">暂无球房数据</view>
+    <view
+      wx:for="{{ballrooms}}"
+      wx:key="id"
+      class="list-card ballroom-card"
+      bindtap="goDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="ballroom-top">
+        <text class="ballroom-name">{{item.name}}</text>
+        <text class="ballroom-rating">⭐ {{item.rating || 0}}</text>
+      </view>
+      <text class="ballroom-address">{{item.address}}</text>
+      <view class="ballroom-bottom">
+        <text class="ballroom-price">{{item.priceDesc || '暂无'}}</text>
+        <text class="ballroom-distance" wx:if="{{item.distance}}">{{item.distance}}</text>
+      </view>
+    </view>
+    <view wx:if="{{loading}}" class="loading-state">加载中...</view>
+    <view wx:if="{{!hasMore && ballrooms.length > 0}}" class="loading-state">— 没有更多了 —</view>
+  </view>
+</view>
