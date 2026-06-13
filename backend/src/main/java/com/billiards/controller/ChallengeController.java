@@ -15,8 +15,6 @@
 
 
 
-
-
 package com.billiards.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -45,12 +43,11 @@ public class ChallengeController {
     private final ChallengeSignupService signupService;
 
     /**
-     * 发起约战
-     * POST /api/challenge/create?userId=1
-     * 请求参数：{ "ballroomId": 1, "ballType": 1, "formatType": 1, "formatValue": 5, "startTime": "2026-06-14 14:00:00", "maxPlayers": 2, "remark": "" }
+     * 创建约战
+     * POST /api/challenge/create
      */
     @PostMapping("/create")
-    public Result<Challenge> create(@RequestParam Long userId,
+    public Result<Challenge> create(@RequestHeader("userId") Long userId,
                                      @Valid @RequestBody ChallengeCreateDTO dto) {
         Challenge challenge = challengeService.createChallenge(
                 userId, dto.getBallroomId(), dto.getBallType(),
@@ -60,46 +57,50 @@ public class ChallengeController {
     }
 
     /**
-     * 约战列表：支持按球种筛选，按时间排序
-     * GET /api/challenge/page?page=1&size=10&ballType=1&status=0
+     * 约战分页列表
+     * GET /api/challenge/page?page=1&size=10&ballType=&status=
      */
     @GetMapping("/page")
     public Result<Page<Challenge>> page(@RequestParam(defaultValue = "1") Integer page,
                                          @RequestParam(defaultValue = "10") Integer size,
                                          @RequestParam(required = false) Integer ballType,
                                          @RequestParam(required = false) Integer status) {
-        Page<Challenge> result = challengeService.getChallengePage(page, size, ballType, status);
-        return Result.success(result);
+        return Result.success(challengeService.getChallengePage(page, size, ballType, status));
     }
 
     /**
-     * 约战详情（含发起人、球房、报名信息）
-     * GET /api/challenge/{id}
+     * 约战详情
+     * GET /api/challenge/{id}?userId=1
      */
     @GetMapping("/{id}")
-    public Result<ChallengeDetailVO> detail(@PathVariable Long id) {
+    public Result<ChallengeDetailVO> detail(@PathVariable Long id,
+                                             @RequestParam(required = false) Long userId) {
         ChallengeDetailVO vo = challengeService.getChallengeDetail(id);
+        if (userId != null) {
+            vo.setIsSignedUp(signupService.isUserSignedUp(id, userId));
+            vo.setIsInitiator(vo.getInitiatorId().equals(userId));
+        }
         return Result.success(vo);
     }
 
     /**
-     * 取消约战（仅发起人）
-     * POST /api/challenge/{id}/cancel?userId=1
+     * 取消约战
+     * POST /api/challenge/{id}/cancel
      */
     @PostMapping("/{id}/cancel")
-    public Result<Void> cancel(@RequestParam Long userId, @PathVariable Long id) {
+    public Result<Void> cancel(@RequestHeader("userId") Long userId,
+                                @PathVariable Long id) {
         challengeService.cancelChallenge(userId, id);
         return Result.success();
     }
 
     /**
-     * 结束约战提交比分（仅发起人）
-     * POST /api/challenge/{id}/finish?userId=1
-     * 请求参数：{ "scoreInitiator": 5, "scoreOpponent": 3, "winnerId": 1 }
+     * 完成约战（提交比分）
+     * POST /api/challenge/{id}/finish
      */
     @PostMapping("/{id}/finish")
-    public Result<Void> finish(@PathVariable Long id,
-                                @RequestParam Long userId,
+    public Result<Void> finish(@RequestHeader("userId") Long userId,
+                                @PathVariable Long id,
                                 @Valid @RequestBody ChallengeFinishDTO dto) {
         challengeService.finishChallenge(id, userId, dto.getScoreInitiator(),
                 dto.getScoreOpponent(), dto.getWinnerId());
@@ -108,35 +109,34 @@ public class ChallengeController {
 
     /**
      * 报名约战
-     * POST /api/challenge/{id}/signup?userId=2
+     * POST /api/challenge/{id}/signup
      */
     @PostMapping("/{id}/signup")
-    public Result<Void> signup(@PathVariable Long id, @RequestParam Long userId) {
+    public Result<Void> signup(@RequestHeader("userId") Long userId,
+                                @PathVariable Long id) {
         signupService.signup(id, userId);
         return Result.success();
     }
 
     /**
-     * 确认报名（仅发起人）
-     * POST /api/challenge/{id}/signup/confirm?userId=1
-     * 请求参数：{ "signupId": 1 }
+     * 确认报名
+     * POST /api/challenge/{id}/signup/confirm
      */
     @PostMapping("/{id}/signup/confirm")
-    public Result<Void> confirmSignup(@PathVariable Long id,
-                                       @RequestParam Long userId,
+    public Result<Void> confirmSignup(@RequestHeader("userId") Long userId,
+                                       @PathVariable Long id,
                                        @Valid @RequestBody SignupHandleDTO dto) {
         signupService.confirmSignup(id, userId, dto.getSignupId());
         return Result.success();
     }
 
     /**
-     * 拒绝报名（仅发起人）
-     * POST /api/challenge/{id}/signup/reject?userId=1
-     * 请求参数：{ "signupId": 1 }
+     * 拒绝报名
+     * POST /api/challenge/{id}/signup/reject
      */
     @PostMapping("/{id}/signup/reject")
-    public Result<Void> rejectSignup(@PathVariable Long id,
-                                      @RequestParam Long userId,
+    public Result<Void> rejectSignup(@RequestHeader("userId") Long userId,
+                                      @PathVariable Long id,
                                       @Valid @RequestBody SignupHandleDTO dto) {
         signupService.rejectSignup(id, userId, dto.getSignupId());
         return Result.success();
@@ -144,19 +144,17 @@ public class ChallengeController {
 
     /**
      * 我的约战列表
-     * GET /api/challenge/my?userId=1&type=1&page=1&size=10
+     * GET /api/challenge/my/{userId}?type=1&page=1&size=10
      * type: 1-我发起的 2-我参加的 3-历史的
      */
-    @GetMapping("/my")
-    public Result<Page<Challenge>> myChallenges(@RequestParam Long userId,
+    @GetMapping("/my/{userId}")
+    public Result<Page<Challenge>> myChallenges(@PathVariable Long userId,
                                                   @RequestParam(defaultValue = "1") Integer type,
                                                   @RequestParam(defaultValue = "1") Integer page,
                                                   @RequestParam(defaultValue = "10") Integer size) {
-        Page<Challenge> result = challengeService.getMyChallenges(userId, type, page, size);
-        return Result.success(result);
+        return Result.success(challengeService.getMyChallenges(userId, type, page, size));
     }
 }
-
 
 
 

@@ -5,6 +5,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 package com.billiards.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
@@ -22,10 +32,13 @@ public class ChallengeSignup {
     @TableId(type = IdType.AUTO)
     private Long id;
 
+    /** 约战ID */
     private Long challengeId;
 
+    /** 报名用户ID */
     private Long userId;
 
+    /** 报名状态 0-待确认 1-已确认 2-已拒绝 */
     private Integer status;
 
     @TableField(fill = FieldFill.INSERT)
@@ -34,6 +47,17 @@ public class ChallengeSignup {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

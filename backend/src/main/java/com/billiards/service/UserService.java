@@ -4,44 +4,37 @@
 
 
 
-
-
-
 package com.billiards.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.billiards.dto.UserLoginVO;
 import com.billiards.dto.UserStatsVO;
 import com.billiards.entity.User;
 
 /**
- * 用户服务接口
+ * 用户业务接口
  */
-public interface UserService extends IService<User> {
+public interface UserService {
 
     /**
-     * 微信登录：接收 code，模拟换取 openid，自动注册/更新用户信息，返回 token
+     * 微信登录（本地开发直接注册/登录）
      */
-    UserLoginVO login(String code);
+    UserLoginVO login(String code, String nickname, String avatarUrl);
 
     /**
-     * 根据 token 获取当前用户信息
+     * 获取用户信息
      */
-    User getCurrentUser(String token);
+    User getUserById(Long userId);
 
     /**
-     * 更新用户资料（昵称、头像）
+     * 更新用户资料
      */
-    void updateProfile(Long userId, String nickname, String avatarUrl, Integer gender);
+    void updateProfile(Long userId, String nickname, String avatarUrl, String phone, Integer gender);
 
     /**
-     * 获取我的战绩统计
+     * 获取用户统计数据
      */
     UserStatsVO getUserStats(Long userId);
 }
-
-
-
 
 
 

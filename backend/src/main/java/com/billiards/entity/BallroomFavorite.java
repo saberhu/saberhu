@@ -7,6 +7,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 package com.billiards.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
@@ -24,13 +36,28 @@ public class BallroomFavorite {
     @TableId(type = IdType.AUTO)
     private Long id;
 
+    /** 用户ID */
     private Long userId;
 
+    /** 球房ID */
     private Long ballroomId;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

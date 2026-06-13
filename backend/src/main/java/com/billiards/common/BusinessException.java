@@ -1,7 +1,6 @@
 
 
 
-
 package com.billiards.common;
 
 import lombok.Getter;
@@ -24,6 +23,5 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 }
-
 
 

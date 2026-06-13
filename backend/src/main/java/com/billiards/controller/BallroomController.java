@@ -10,27 +10,19 @@
 
 
 
-
-
-
-
-
 package com.billiards.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.billiards.common.Result;
 import com.billiards.dto.BallroomPageDTO;
 import com.billiards.dto.BallroomReviewDTO;
 import com.billiards.entity.Ballroom;
 import com.billiards.entity.BallroomReview;
-import com.billiards.mapper.BallroomReviewMapper;
 import com.billiards.service.BallroomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,16 +34,17 @@ import java.util.List;
 public class BallroomController {
 
     private final BallroomService ballroomService;
-    private final BallroomReviewMapper reviewMapper;
 
     /**
-     * 球房列表：支持按距离排序、按评分排序
-     * GET /api/ballroom/page?page=1&size=10&sortBy=rating&latitude=32.89&longitude=115.82
+     * 球房分页列表
+     * GET /api/ballroom/page?page=1&size=10&keyword=xxx&userId=1
      */
     @GetMapping("/page")
-    public Result<Page<Ballroom>> page(BallroomPageDTO dto) {
-        Page<Ballroom> result = ballroomService.getBallroomPage(dto);
-        return Result.success(result);
+    public Result<Page<BallroomPageDTO>> page(@RequestParam(defaultValue = "1") Integer page,
+                                               @RequestParam(defaultValue = "10") Integer size,
+                                               @RequestParam(required = false) String keyword,
+                                               @RequestParam(required = false) Long userId) {
+        return Result.success(ballroomService.getBallroomPage(page, size, keyword, userId));
     }
 
     /**
@@ -60,82 +53,70 @@ public class BallroomController {
      */
     @GetMapping("/{id}")
     public Result<Ballroom> detail(@PathVariable Long id) {
-        Ballroom ballroom = ballroomService.getBallroomDetail(id);
-        return Result.success(ballroom);
+        return Result.success(ballroomService.getBallroomById(id));
     }
 
     /**
-     * 获取球房评价列表
+     * 球房评价列表
      * GET /api/ballroom/{id}/reviews?page=1&size=10
      */
     @GetMapping("/{id}/reviews")
     public Result<Page<BallroomReview>> reviews(@PathVariable Long id,
                                                  @RequestParam(defaultValue = "1") Integer page,
                                                  @RequestParam(defaultValue = "10") Integer size) {
-        Page<BallroomReview> result = reviewMapper.selectPage(new Page<>(page, size),
-                new LambdaQueryWrapper<BallroomReview>()
-                        .eq(BallroomReview::getBallroomId, id)
-                        .orderByDesc(BallroomReview::getCreateTime));
-        return Result.success(result);
+        return Result.success(ballroomService.getReviews(id, page, size));
     }
 
     /**
-     * 发布球房评价
-     * POST /api/ballroom/{id}/review?userId=1
-     * 请求参数：{ "rating": 4.5, "content": "环境不错", "images": "" }
+     * 提交评价
+     * POST /api/ballroom/review
      */
-    @PostMapping("/{id}/review")
-    public Result<Void> submitReview(@PathVariable Long id,
-                                      @RequestParam Long userId,
+    @PostMapping("/review")
+    public Result<Void> submitReview(@RequestHeader("userId") Long userId,
                                       @Valid @RequestBody BallroomReviewDTO dto) {
-        BallroomReview review = new BallroomReview();
-        review.setBallroomId(id);
-        review.setUserId(userId);
-        review.setRating(BigDecimal.valueOf(dto.getRating()));
-        review.setContent(dto.getContent() != null ? dto.getContent() : "");
-        review.setImages(dto.getImages());
-        reviewMapper.insert(review);
-
-        // 更新球房评分
-        ballroomService.updateRating(id);
+        ballroomService.submitReview(userId, dto.getBallroomId(), dto.getRating(),
+                dto.getContent(), dto.getImages());
         return Result.success();
     }
 
     /**
-     * 收藏/取消收藏球房
-     * POST /api/ballroom/{id}/favorite?userId=1
+     * 收藏/取消收藏
+     * POST /api/ballroom/{id}/favorite
      */
     @PostMapping("/{id}/favorite")
-    public Result<Boolean> toggleFavorite(@PathVariable Long id, @RequestParam Long userId) {
-        boolean isFavorite = ballroomService.toggleFavorite(userId, id);
-        return Result.success(isFavorite);
+    public Result<Boolean> toggleFavorite(@RequestHeader("userId") Long userId,
+                                           @PathVariable Long id) {
+        return Result.success(ballroomService.toggleFavorite(userId, id));
     }
 
     /**
-     * 是否已收藏
+     * 检查是否已收藏
      * GET /api/ballroom/{id}/favorite/check?userId=1
      */
     @GetMapping("/{id}/favorite/check")
-    public Result<Boolean> checkFavorite(@PathVariable Long id, @RequestParam Long userId) {
-        boolean isFavorite = ballroomService.checkFavorite(userId, id);
-        return Result.success(isFavorite);
+    public Result<Boolean> checkFavorite(@RequestParam Long userId,
+                                          @PathVariable Long id) {
+        return Result.success(ballroomService.checkFavorite(userId, id));
     }
 
     /**
-     * 我的收藏列表
-     * GET /api/ballroom/favorite/list?userId=1
+     * 用户收藏列表
+     * GET /api/ballroom/favorites/{userId}
      */
-    @GetMapping("/favorite/list")
-    public Result<List<Ballroom>> myFavorites(@RequestParam Long userId) {
-        List<Ballroom> list = ballroomService.getMyFavorites(userId);
-        return Result.success(list);
+    @GetMapping("/favorites/{userId}")
+    public Result<List<Ballroom>> favorites(@PathVariable Long userId) {
+        return Result.success(ballroomService.getUserFavorites(userId));
+    }
+
+    /**
+     * 热门球房推荐
+     * GET /api/ballroom/hot?limit=5
+     */
+    @GetMapping("/hot")
+    public Result<List<Ballroom>> hot(@RequestParam(defaultValue = "5") Integer limit) {
+        return Result.success(ballroomService.getHotBallrooms(limit));
     }
 }
-
-
-
-
-
 
 
 

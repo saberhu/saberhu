@@ -1,9 +1,4 @@
 
-
-
-
-
-
 package com.billiards;
 
 import org.springframework.boot.SpringApplication;
@@ -19,8 +14,3 @@ public class BilliardsApplication {
         SpringApplication.run(BilliardsApplication.class, args);
     }
 }
-
-
-
-
-

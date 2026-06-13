@@ -1,6 +1,7 @@
 
 
 
+
 package com.billiards.common;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,5 +40,6 @@ public class GlobalExceptionHandler {
         return Result.error("服务器繁忙，请稍后重试");
     }
 }
+
 
 

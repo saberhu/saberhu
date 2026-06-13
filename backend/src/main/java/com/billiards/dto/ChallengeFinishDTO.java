@@ -4,6 +4,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 package com.billiards.dto;
 
 import lombok.Data;
@@ -11,7 +25,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * 结束约战提交比分 DTO
+ * 完成约战请求
  */
 @Data
 public class ChallengeFinishDTO {
@@ -24,6 +38,21 @@ public class ChallengeFinishDTO {
 
     private Long winnerId;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -15,54 +15,57 @@
 
 
 
-
-
 package com.billiards.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.billiards.common.BusinessException;
 import com.billiards.common.Constants;
+import com.billiards.dto.SignupUserVO;
 import com.billiards.entity.Challenge;
 import com.billiards.entity.ChallengeSignup;
+import com.billiards.entity.User;
 import com.billiards.mapper.ChallengeMapper;
 import com.billiards.mapper.ChallengeSignupMapper;
+import com.billiards.mapper.UserMapper;
 import com.billiards.service.ChallengeSignupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
- * 约战报名服务实现
+ * 约战报名业务实现
  */
 @Service
 @RequiredArgsConstructor
-public class ChallengeSignupServiceImpl extends ServiceImpl<ChallengeSignupMapper, ChallengeSignup>
-        implements ChallengeSignupService {
+public class ChallengeSignupServiceImpl implements ChallengeSignupService {
 
+    private final ChallengeSignupMapper signupMapper;
     private final ChallengeMapper challengeMapper;
+    private final UserMapper userMapper;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public void signup(Long challengeId, Long userId) {
         Challenge challenge = challengeMapper.selectById(challengeId);
         if (challenge == null) {
-            throw new BusinessException("约战不存在");
+            throw new BusinessException(404, "约战不存在");
         }
         if (challenge.getStatus() != Constants.CHALLENGE_PENDING) {
-            throw new BusinessException("该约战已结束，无法报名");
+            throw new BusinessException("当前约战状态不允许报名");
         }
-        // 发起人不能报名自己的约战
         if (challenge.getInitiatorId().equals(userId)) {
             throw new BusinessException("发起人无需报名");
         }
 
         // 检查是否已报名
-        Long count = lambdaQuery()
-                .eq(ChallengeSignup::getChallengeId, challengeId)
-                .eq(ChallengeSignup::getUserId, userId)
-                .count();
-        if (count > 0) {
+        ChallengeSignup existing = signupMapper.selectOne(
+                new LambdaQueryWrapper<ChallengeSignup>()
+                        .eq(ChallengeSignup::getChallengeId, challengeId)
+                        .eq(ChallengeSignup::getUserId, userId));
+        if (existing != null) {
             throw new BusinessException("您已报名该约战");
         }
 
@@ -70,71 +73,79 @@ public class ChallengeSignupServiceImpl extends ServiceImpl<ChallengeSignupMappe
         signup.setChallengeId(challengeId);
         signup.setUserId(userId);
         signup.setStatus(Constants.SIGNUP_PENDING);
-        save(signup);
+        signupMapper.insert(signup);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public void confirmSignup(Long challengeId, Long userId, Long signupId) {
-        // 校验发起人身份
         Challenge challenge = challengeMapper.selectById(challengeId);
-        if (challenge == null) {
-            throw new BusinessException("约战不存在");
-        }
-        if (!challenge.getInitiatorId().equals(userId)) {
-            throw new BusinessException("只有发起人可以确认报名");
+        if (challenge == null || !challenge.getInitiatorId().equals(userId)) {
+            throw new BusinessException("仅发起人可以确认报名");
         }
 
-        ChallengeSignup signup = getById(signupId);
-        if (signup == null) {
+        ChallengeSignup signup = signupMapper.selectById(signupId);
+        if (signup == null || !signup.getChallengeId().equals(challengeId)) {
             throw new BusinessException("报名记录不存在");
-        }
-        if (!signup.getChallengeId().equals(challengeId)) {
-            throw new BusinessException("报名记录不属于该约战");
-        }
-        if (signup.getStatus() != Constants.SIGNUP_PENDING) {
-            throw new BusinessException("该报名已处理");
         }
 
         signup.setStatus(Constants.SIGNUP_CONFIRMED);
-        updateById(signup);
+        signupMapper.updateById(signup);
 
-        // 确认报名后更新约战状态为进行中
+        // 确认后自动将约战状态改为进行中
         if (challenge.getStatus() == Constants.CHALLENGE_PENDING) {
-            challenge.setStatus(Constants.CHALLENGE_IN_PROGRESS);
+            challenge.setStatus(Constants.CHALLENGE_ONGOING);
             challengeMapper.updateById(challenge);
         }
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public void rejectSignup(Long challengeId, Long userId, Long signupId) {
-        // 校验发起人身份
         Challenge challenge = challengeMapper.selectById(challengeId);
-        if (challenge == null) {
-            throw new BusinessException("约战不存在");
-        }
-        if (!challenge.getInitiatorId().equals(userId)) {
-            throw new BusinessException("只有发起人可以拒绝报名");
+        if (challenge == null || !challenge.getInitiatorId().equals(userId)) {
+            throw new BusinessException("仅发起人可以拒绝报名");
         }
 
-        ChallengeSignup signup = getById(signupId);
-        if (signup == null) {
+        ChallengeSignup signup = signupMapper.selectById(signupId);
+        if (signup == null || !signup.getChallengeId().equals(challengeId)) {
             throw new BusinessException("报名记录不存在");
-        }
-        if (!signup.getChallengeId().equals(challengeId)) {
-            throw new BusinessException("报名记录不属于该约战");
-        }
-        if (signup.getStatus() != Constants.SIGNUP_PENDING) {
-            throw new BusinessException("该报名已处理");
         }
 
         signup.setStatus(Constants.SIGNUP_REJECTED);
-        updateById(signup);
+        signupMapper.updateById(signup);
+    }
+
+    @Override
+    public List<SignupUserVO> getSignupsByChallengeId(Long challengeId) {
+        List<ChallengeSignup> signups = signupMapper.selectList(
+                new LambdaQueryWrapper<ChallengeSignup>()
+                        .eq(ChallengeSignup::getChallengeId, challengeId));
+
+        return signups.stream().map(s -> {
+            SignupUserVO vo = new SignupUserVO();
+            vo.setSignupId(s.getId());
+            vo.setUserId(s.getUserId());
+            vo.setStatus(s.getStatus());
+
+            User user = userMapper.selectById(s.getUserId());
+            if (user != null) {
+                vo.setNickname(user.getNickname());
+                vo.setAvatarUrl(user.getAvatarUrl());
+                vo.setLevelScore(user.getLevelScore());
+            }
+            return vo;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isUserSignedUp(Long challengeId, Long userId) {
+        return signupMapper.selectCount(
+                new LambdaQueryWrapper<ChallengeSignup>()
+                        .eq(ChallengeSignup::getChallengeId, challengeId)
+                        .eq(ChallengeSignup::getUserId, userId)) > 0;
     }
 }
-
-
 
 
 

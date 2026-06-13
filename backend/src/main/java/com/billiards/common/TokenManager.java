@@ -1,44 +1,71 @@
 
+
+
+
+
+
+
+
+
 package com.billiards.common;
+
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Token 管理器（简化实现，生产环境建议用 Redis）
+ * Token 管理器（简化版，生产环境建议用 Redis + JWT）
+ * 本地开发使用内存存储
  */
+@Component
 public class TokenManager {
 
-    private static final Map<String, Long> TOKEN_USER_MAP = new ConcurrentHashMap<>();
+    /** token -> userId 映射 */
+    private final Map<String, Long> tokenMap = new ConcurrentHashMap<>();
+
+    /** userId -> token 映射 */
+    private final Map<Long, String> userTokenMap = new ConcurrentHashMap<>();
 
     /**
-     * 生成 token
+     * 为用户生成 token
      */
-    public static String generateToken(Long userId) {
-        String token = UUID.randomUUID().toString().replaceAll("-", "");
-        TOKEN_USER_MAP.put(token, userId);
+    public String generateToken(Long userId) {
+        // 如果已有 token，先移除旧的
+        String oldToken = userTokenMap.get(userId);
+        if (oldToken != null) {
+            tokenMap.remove(oldToken);
+        }
+        String token = UUID.randomUUID().toString().replace("-", "");
+        tokenMap.put(token, userId);
+        userTokenMap.put(userId, token);
         return token;
     }
 
     /**
-     * 根据 token 获取用户ID
+     * 根据 token 获取用户 ID
      */
-    public static Long getUserIdByToken(String token) {
-        return TOKEN_USER_MAP.get(token);
+    public Long getUserId(String token) {
+        return tokenMap.get(token);
     }
 
     /**
-     * 校验 token 是否有效
+     * 移除 token（退出登录）
      */
-    public static boolean isValid(String token) {
-        return token != null && TOKEN_USER_MAP.containsKey(token);
-    }
-
-    /**
-     * 移除 token
-     */
-    public static void removeToken(String token) {
-        TOKEN_USER_MAP.remove(token);
+    public void removeToken(String token) {
+        Long userId = tokenMap.remove(token);
+        if (userId != null) {
+            userTokenMap.remove(userId);
+        }
     }
 }
+
+
+
+
+
+
+
+
+

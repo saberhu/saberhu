@@ -6,6 +6,7 @@ import lombok.Data;
 
 /**
  * 统一返回结果封装
+ * @param <T> 数据类型
  */
 @Data
 public class Result<T> {

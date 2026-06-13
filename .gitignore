@@ -1,2 +1,12 @@
 saberhu/
-saberhu/
+target/
+*.class
+*.jar
+*.log
+.DS_Store
+.browser_screenshots/
+.downloads/
+*.pdf
+*.docx
+__pycache__/
+*.pyc

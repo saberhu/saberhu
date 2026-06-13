@@ -7,16 +7,23 @@
 
 
 
+
+
+
+
+
+
+
+
 package com.billiards.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * 创建约战 DTO
+ * 创建约战请求
  */
 @Data
 public class ChallengeCreateDTO {
@@ -36,10 +43,17 @@ public class ChallengeCreateDTO {
     @NotNull(message = "开始时间不能为空")
     private LocalDateTime startTime;
 
-    private Integer maxPlayers;
-
+    private Integer maxPlayers = 2;
     private String remark;
 }
+
+
+
+
+
+
+
+
 
 
 

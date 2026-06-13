@@ -3,36 +3,99 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 package com.billiards.dto;
 
-import com.billiards.entity.Challenge;
+import com.billiards.entity.Ballroom;
+import com.billiards.entity.User;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 约战详情 VO（含发起人、球房、报名信息）
+ * 约战详情（含关联信息）
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class ChallengeDetailVO extends Challenge {
+public class ChallengeDetailVO {
 
-    /** 发起人昵称 */
-    private String initiatorName;
+    private Long id;
+    private Long initiatorId;
+    private Long ballroomId;
+    private Integer ballType;
+    private Integer formatType;
+    private Integer formatValue;
+    private LocalDateTime startTime;
+    private Integer maxPlayers;
+    private String remark;
+    private Integer status;
+    private Integer scoreInitiator;
+    private Integer scoreOpponent;
+    private Long winnerId;
+    private LocalDateTime createTime;
 
-    /** 发起人头像 */
-    private String initiatorAvatar;
+    /** 发起人信息 */
+    private User initiator;
 
-    /** 球房名称 */
-    private String ballroomName;
-
-    /** 球房地址 */
-    private String ballroomAddress;
+    /** 球房信息 */
+    private Ballroom ballroom;
 
     /** 报名列表 */
     private List<SignupUserVO> signups;
+
+    /** 当前用户是否已报名 */
+    private Boolean isSignedUp;
+
+    /** 当前用户是否是发起人 */
+    private Boolean isInitiator;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
