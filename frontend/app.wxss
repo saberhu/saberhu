@@ -1,0 +1,55 @@
+
+
+
+
+
+/* ============================================================
+   阜阳台球约战小程序 - 全局样式
+   ============================================================ */
+
+/** 主题色 */
+page {
+  --theme-color: #07c160;
+  --bg-color: #f5f5f5;
+  --text-color: #333;
+  --text-secondary: #999;
+  --border-color: #eee;
+
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  box-sizing: border-box;
+}
+
+/** 卡片容器 */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/** 按钮基础样式 */
+.btn-primary {
+  background: var(--theme-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 24px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/** 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+
+
+

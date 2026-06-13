@@ -1,0 +1,30 @@
+
+
+
+
+
+
+
+<!-- 球房列表 -->
+<view class="page">
+  <view wx:for="{{ballrooms}}" wx:key="id" class="ballroom-card" bindtap="goDetail" data-id="{{item.id}}">
+    <view class="card-top">
+      <text class="name">{{item.name}}</text>
+      <text class="rating">⭐ {{item.rating}}</text>
+    </view>
+    <text class="address">{{item.address}}</text>
+    <view class="card-bottom">
+      <text class="price">{{item.priceDesc}}</text>
+      <text class="hours">{{item.businessHours}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{ballrooms.length === 0}}" class="empty-state">暂无球房数据</view>
+  <view wx:if="{{loading}}" class="loading-state">加载中...</view>
+</view>
+
+
+
+
+
+

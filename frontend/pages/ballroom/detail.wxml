@@ -1,0 +1,55 @@
+
+
+
+
+
+
+
+
+
+<!-- 球房详情 -->
+<view class="page">
+  <view wx:if="{{loading}}" class="loading-state">加载中...</view>
+
+  <block wx:else>
+    <view class="detail-card">
+      <text class="name">{{ballroom.name}}</text>
+      <text class="address">📍 {{ballroom.address}}</text>
+      <text class="phone">📞 {{ballroom.phone}}</text>
+      <text class="hours">🕐 {{ballroom.businessHours}}</text>
+      <text class="price">💰 {{ballroom.priceDesc}}</text>
+      <view class="rating-row">
+        <text>⭐ {{ballroom.rating}}分</text>
+        <text class="rating-count">{{ballroom.ratingCount}}条评价</text>
+      </view>
+    </view>
+
+    <view class="action-bar">
+      <button class="btn-favorite" bindtap="toggleFavorite">
+        {{isFavorite ? '❤️ 已收藏' : '🤍 收藏'}}
+      </button>
+      <button class="btn-challenge" bindtap="goCreateChallenge">发起约战</button>
+    </view>
+
+    <!-- 评价列表 -->
+    <view class="section">
+      <text class="section-title">用户评价</text>
+      <view wx:for="{{reviews}}" wx:key="id" class="review-item">
+        <view class="review-header">
+          <text class="review-user">用户{{item.userId}}</text>
+          <text class="review-rating">⭐ {{item.rating}}</text>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+      </view>
+      <view wx:if="{{reviews.length === 0}}" class="empty-state">暂无评价</view>
+    </view>
+  </block>
+</view>
+
+
+
+
+
+
+
+

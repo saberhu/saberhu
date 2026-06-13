@@ -1,0 +1,63 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 约战详情 -->
+<view class="page">
+  <view wx:if="{{loading}}" class="loading-state">加载中...</view>
+
+  <block wx:else>
+    <view class="detail-card">
+      <view class="card-header">
+        <text class="ball-type">{{challenge.ballType === 1 ? '中式八球' : challenge.ballType === 2 ? '斯诺克' : '九球'}}</text>
+        <text class="status">{{challenge.status === 0 ? '待应战' : challenge.status === 1 ? '进行中' : '已结束'}}</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">开始时间</text>
+        <text class="info-value">{{challenge.startTime}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">赛制</text>
+        <text class="info-value">{{challenge.formatType === 1 ? '局数制' : '时间制'}} {{challenge.formatValue}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">最大人数</text>
+        <text class="info-value">{{challenge.maxPlayers}}人</text>
+      </view>
+      <view class="info-row" wx:if="{{challenge.remark}}">
+        <text class="info-label">备注</text>
+        <text class="info-value">{{challenge.remark}}</text>
+      </view>
+      <view class="info-row" wx:if="{{challenge.scoreInitiator !== null}}">
+        <text class="info-label">比分</text>
+        <text class="info-value">{{challenge.scoreInitiator}} : {{challenge.scoreOpponent}}</text>
+      </view>
+    </view>
+
+    <button class="signup-btn" bindtap="signup" wx:if="{{challenge.status === 0}}">报名参与</button>
+  </block>
+</view>
+
+
+
+
+
+
+
+
+
+
+
+
+

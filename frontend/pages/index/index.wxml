@@ -1,0 +1,64 @@
+
+
+
+
+
+
+<!-- ============================================================
+     首页
+     ============================================================ -->
+<view class="page">
+
+  <!-- 顶部 Banner -->
+  <view class="banner">
+    <image src="/images/banner.png" mode="widthFix" class="banner-img" />
+  </view>
+
+  <!-- 快捷操作 -->
+  <view class="quick-actions">
+    <view class="action-item" bindtap="goCreateChallenge">
+      <text class="action-icon">⚡</text>
+      <text class="action-text">发起约战</text>
+    </view>
+    <view class="action-item" bindtap="goBallroomList">
+      <text class="action-icon">🏠</text>
+      <text class="action-text">附近球房</text>
+    </view>
+  </view>
+
+  <!-- 推荐球房 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">推荐球房</text>
+      <text class="section-more" bindtap="goBallroomList">查看更多 &gt;</text>
+    </view>
+    <view wx:for="{{ballrooms}}" wx:key="id" class="ballroom-card" bindtap="goBallroom" data-id="{{item.id}}">
+      <text class="ballroom-name">{{item.name}}</text>
+      <text class="ballroom-address">{{item.address}}</text>
+      <view class="ballroom-info">
+        <text class="ballroom-price">{{item.priceDesc}}</text>
+        <text class="ballroom-rating">⭐ {{item.rating}}分</text>
+      </view>
+    </view>
+    <view wx:if="{{ballrooms.length === 0}}" class="empty-state">暂无球房数据</view>
+  </view>
+
+  <!-- 最新约战 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">最新约战</text>
+      <text class="section-more" bindtap="goChallengeList">查看更多 &gt;</text>
+    </view>
+    <view wx:for="{{challenges}}" wx:key="id" class="challenge-card" bindtap="goChallenge" data-id="{{item.id}}">
+      <text class="challenge-time">{{item.startTime}}</text>
+      <text class="challenge-status">{{item.status === 0 ? '待应战' : item.status === 1 ? '进行中' : '已结束'}}</text>
+    </view>
+    <view wx:if="{{challenges.length === 0}}" class="empty-state">暂无约战数据</view>
+  </view>
+
+</view>
+
+
+
+
+

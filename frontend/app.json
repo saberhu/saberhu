@@ -1,0 +1,50 @@
+
+
+
+
+{
+  "pages": [
+    "pages/index/index",
+    "pages/ballroom/ballroom",
+    "pages/ballroom/detail",
+    "pages/challenge/challenge",
+    "pages/challenge/create",
+    "pages/challenge/detail",
+    "pages/user/user"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#07c160",
+    "navigationBarTitleText": "阜阳台球约战",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#07c160",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home_active.png"
+      },
+      {
+        "pagePath": "pages/challenge/challenge",
+        "text": "约战",
+        "iconPath": "images/challenge.png",
+        "selectedIconPath": "images/challenge_active.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的",
+        "iconPath": "images/user.png",
+        "selectedIconPath": "images/user_active.png"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
+
+
+

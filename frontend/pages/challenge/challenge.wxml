@@ -1,0 +1,37 @@
+
+
+
+
+
+
+
+
+
+<!-- 约战列表 -->
+<view class="page">
+  <view class="header-bar">
+    <text class="title">全部约战</text>
+    <button class="create-btn" bindtap="goCreate">+ 发起约战</button>
+  </view>
+
+  <view wx:for="{{challenges}}" wx:key="id" class="challenge-card" bindtap="goDetail" data-id="{{item.id}}">
+    <view class="card-header">
+      <text class="ball-type">{{item.ballType === 1 ? '中式八球' : '斯诺克'}}</text>
+      <text class="status {{item.status === 0 ? 'pending' : item.status === 1 ? 'active' : 'done'}}">
+        {{item.status === 0 ? '待应战' : item.status === 1 ? '进行中' : '已结束'}}
+      </text>
+    </view>
+    <text class="start-time">🕐 {{item.startTime}}</text>
+    <text class="remark" wx:if="{{item.remark}}">{{item.remark}}</text>
+  </view>
+
+  <view wx:if="{{challenges.length === 0}}" class="empty-state">暂无约战</view>
+</view>
+
+
+
+
+
+
+
+
