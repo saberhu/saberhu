@@ -11,7 +11,7 @@
 # 基于已打包的 JAR 构建镜像，JDK 17 运行
 # ============================================================
 
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # 从本地 target 目录复制已打包的 JAR
