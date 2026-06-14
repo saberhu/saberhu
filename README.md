@@ -66,16 +66,22 @@
 
 ## 本地启动步骤
 
+### 前置条件
+- JDK 17+
+- Maven 3.8+
+- MySQL 8.0（本地安装或 Docker，可选）
+- 微信开发者工具
+
 ### 方式一：Docker Compose 一键启动（推荐）
 
 ```bash
-# 1. 启动所有服务
-docker-compose up -d
+# 启动所有服务（MySQL + 后端）
+docker-compose up --build -d
 
-# 2. 查看日志
+# 查看日志
 docker-compose logs -f
 
-# 3. 停止服务
+# 停止服务
 docker-compose down
 ```
 
@@ -83,7 +89,22 @@ docker-compose down
 - 后端 API：http://localhost:8080
 - MySQL：localhost:3306
 
-### 方式二：手动启动后端
+### 方式二：无 Docker 环境（H2 数据库模拟）
+
+如果当前环境没有 Docker，可以使用脚本自动启动（H2 内存数据库，MySQL 兼容模式）：
+
+```bash
+# 一键启动
+bash scripts/start-docker-compose.sh
+
+# 查看日志
+tail -f /tmp/backend-prod.log
+
+# 停止服务
+kill $(cat /tmp/backend-pid.txt)
+```
+
+### 方式三：手动启动后端
 
 ```bash
 # 1. 启动 MySQL（确保本地已安装）
@@ -93,13 +114,24 @@ mysql -u root -p < sql/init.sql
 cd backend
 mvn clean package -DskipTests
 
-# 3. 启动后端
-java -jar target/billiards-1.0.0.jar
+# 3. 启动后端（开发环境，H2 内存数据库）
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+# 或启动后端（生产环境，需要 MySQL）
+java -jar target/billiards-backend-1.0.0.jar --spring.profiles.active=prod
 ```
 
-### 方式三：微信小程序前端
+### 方式四：微信小程序前端
 
 使用微信开发者工具打开 `frontend/` 目录，修改 `app.js` 中的 `baseUrl` 为实际后端地址即可运行。
+
+### 访问地址
+
+| 服务 | 地址 | 说明 |
+|------|------|------|
+| 后端 API | http://localhost:8080 | RESTful 接口 |
+| H2 控制台 | http://localhost:8080/h2-console | 仅 dev 模式可用 |
+| MySQL | localhost:3306 | 仅 prod 模式需要 |
 
 ## 环境变量说明
 

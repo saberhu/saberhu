@@ -25,6 +25,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      # 启动时自动执行初始化脚本建表
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
@@ -43,6 +44,7 @@ services:
     ports:
       - "8080:8080"
     environment:
+      # 通过服务名 mysql 连接数据库
       MYSQL_HOST: db
       MYSQL_PORT: 3306
       MYSQL_DATABASE: billiards
