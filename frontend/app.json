@@ -27,26 +27,26 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "images/home.png",
-        "selectedIconPath": "images/home_active.png"
+        "iconPath": "images/home.svg",
+        "selectedIconPath": "images/home_active.svg"
       },
       {
         "pagePath": "pages/challenge/list",
         "text": "约战",
-        "iconPath": "images/challenge.png",
-        "selectedIconPath": "images/challenge_active.png"
+        "iconPath": "images/challenge.svg",
+        "selectedIconPath": "images/challenge_active.svg"
       },
       {
         "pagePath": "pages/ballroom/map",
         "text": "球房",
-        "iconPath": "images/ballroom.png",
-        "selectedIconPath": "images/ballroom_active.png"
+        "iconPath": "images/ballroom.svg",
+        "selectedIconPath": "images/ballroom_active.svg"
       },
       {
         "pagePath": "pages/user/profile",
         "text": "我的",
-        "iconPath": "images/user.png",
-        "selectedIconPath": "images/user_active.png"
+        "iconPath": "images/user.svg",
+        "selectedIconPath": "images/user_active.svg"
       }
     ]
   },
