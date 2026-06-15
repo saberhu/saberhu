@@ -1,0 +1,22 @@
+
+<!-- ============================================================
+     模拟登录页 - 本地开发环境使用
+     ============================================================ -->
+<view class="page">
+  <view class="header">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"/>
+    <text class="title">台球约战</text>
+    <text class="subtitle">请选择测试账号登录</text>
+  </view>
+
+  <view class="user-list">
+    <view class="user-card" wx:for="{{users}}" wx:key="id" bindtap="login" data-id="{{item.id}}" data-nickname="{{item.nickname}}">
+      <view class="avatar {{item.avatarClass}}">{{item.avatarChar}}</view>
+      <view class="user-info">
+        <text class="nickname">{{item.nickname}}</text>
+        <text class="stats">等级分 {{item.levelScore}} · {{item.wins}}胜 {{item.losses}}负</text>
+      </view>
+      <image class="arrow" src="/images/icons/arrow-right.svg"/>
+    </view>
+  </view>
+</view>

@@ -26,11 +26,10 @@ App({
     const sysInfo = wx.getSystemInfoSync();
     this.globalData.systemInfo = sysInfo;
 
-    // 检查登录状态
-    const token = wx.getStorageSync('token');
+    // 检查登录状态，未登录则跳转登录页
     const userId = wx.getStorageSync('userId');
-    if (token && userId) {
-      this.globalData.isLoggedIn = true;
+    if (!userId) {
+      wx.redirectTo({ url: '/pages/login/login' });
     }
   },
 
