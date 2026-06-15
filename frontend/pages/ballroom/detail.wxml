@@ -29,7 +29,7 @@
       </view>
 
       <view class="rating-row">
-        <text class="rating-stars">{{'⭐'.repeat(Math.round(ballroom.rating || 0))}}</text>
+        <text class="rating-stars">{{ballroomStars}}</text>
         <text class="rating-num">{{ballroom.rating || 0}}分</text>
       </view>
 
@@ -69,7 +69,7 @@
           <view class="review-avatar">{{item.userName ? item.userName[0] : '?'}}</view>
           <view class="review-user-info">
             <text class="review-name">{{item.userName || '用户'}}</text>
-            <text class="review-stars">{{'⭐'.repeat(item.rating || 0)}}</text>
+            <text class="review-stars">{{item.reviewStars}}</text>
           </view>
           <text class="review-time">{{item.createTime ? item.createTime.substring(0, 10) : ''}}</text>
         </view>
