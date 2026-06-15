@@ -11,7 +11,7 @@ const app = getApp();
  * @returns {Promise}
  */
 function request(url, options = {}) {
-  const { method = 'GET', data = {}, showLoading = true, showError = true } = options;
+  const { method = 'GET', data = {}, showLoading = true, showError = true, header: extraHeader = {} } = options;
 
   return new Promise((resolve, reject) => {
     // 加载提示
@@ -23,7 +23,7 @@ function request(url, options = {}) {
     const token = wx.getStorageSync('token');
 
     // 请求头
-    const header = { 'Content-Type': 'application/json' };
+    const header = { 'Content-Type': 'application/json', ...extraHeader };
     if (token) {
       header['Authorization'] = token;
     }

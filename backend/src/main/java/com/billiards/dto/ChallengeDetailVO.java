@@ -1,31 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package com.billiards.dto;
 
 import com.billiards.entity.Ballroom;
@@ -70,33 +42,60 @@ public class ChallengeDetailVO {
 
     /** 当前用户是否是发起人 */
     private Boolean isInitiator;
+
+    // ===== 以下字段兼容前端直接使用 =====
+
+    /** 发起人名称（兼容前端） */
+    public String getInitiatorName() {
+        return initiator != null ? initiator.getNickname() : null;
+    }
+
+    /** 发起人头像（兼容前端） */
+    public String getInitiatorAvatar() {
+        return initiator != null ? initiator.getAvatarUrl() : null;
+    }
+
+    /** 发起人段位积分（兼容前端） */
+    public Integer getInitiatorLevelScore() {
+        return initiator != null ? initiator.getLevelScore() : null;
+    }
+
+    /** 球房名称（兼容前端） */
+    public String getBallroomName() {
+        return ballroom != null ? ballroom.getName() : null;
+    }
+
+    /** 球房地址（兼容前端） */
+    public String getBallroomAddress() {
+        return ballroom != null ? ballroom.getAddress() : null;
+    }
+
+    /** 报名人数（兼容前端） */
+    public Integer getSignupCount() {
+        return signups != null ? signups.size() : 0;
+    }
+
+    /** 对手名称（已确认报名的用户） */
+    public String getOpponentName() {
+        if (signups != null) {
+            for (SignupUserVO s : signups) {
+                if (s.getStatus() == 1) { // SIGNUP_CONFIRMED
+                    return s.getNickname();
+                }
+            }
+        }
+        return null;
+    }
+
+    /** 对手段位积分 */
+    public Integer getOpponentLevelScore() {
+        if (signups != null) {
+            for (SignupUserVO s : signups) {
+                if (s.getStatus() == 1) {
+                    return s.getLevelScore();
+                }
+            }
+        }
+        return null;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

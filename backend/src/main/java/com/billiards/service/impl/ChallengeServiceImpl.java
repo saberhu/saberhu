@@ -1,17 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package com.billiards.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -19,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.billiards.common.BusinessException;
 import com.billiards.common.Constants;
 import com.billiards.dto.ChallengeDetailVO;
+import com.billiards.dto.ChallengeListVO;
 import com.billiards.dto.SignupUserVO;
 import com.billiards.entity.Ballroom;
 import com.billiards.entity.Challenge;
@@ -56,12 +43,10 @@ public class ChallengeServiceImpl implements ChallengeService {
     public Challenge createChallenge(Long userId, Long ballroomId, Integer ballType,
                                      Integer formatType, Integer formatValue,
                                      LocalDateTime startTime, Integer maxPlayers, String remark) {
-        // 校验用户
         User user = userMapper.selectById(userId);
         if (user == null) {
             throw new BusinessException(404, "用户不存在");
         }
-        // 校验球房
         Ballroom ballroom = ballroomMapper.selectById(ballroomId);
         if (ballroom == null) {
             throw new BusinessException(404, "球房不存在");
@@ -82,7 +67,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
-    public Page<Challenge> getChallengePage(Integer page, Integer size, Integer ballType, Integer status) {
+    public Page<ChallengeListVO> getChallengePage(Integer page, Integer size, Integer ballType, Integer status) {
         Page<Challenge> challengePage = new Page<>(page, size);
         LambdaQueryWrapper<Challenge> wrapper = new LambdaQueryWrapper<Challenge>()
                 .orderByDesc(Challenge::getCreateTime);
@@ -94,7 +79,46 @@ public class ChallengeServiceImpl implements ChallengeService {
             wrapper.eq(Challenge::getStatus, status);
         }
 
-        return challengeMapper.selectPage(challengePage, wrapper);
+        Page<Challenge> result = challengeMapper.selectPage(challengePage, wrapper);
+
+        Page<ChallengeListVO> voPage = new Page<>(result.getCurrent(), result.getSize(), result.getTotal());
+        voPage.setRecords(result.getRecords().stream().map(c -> {
+            ChallengeListVO vo = new ChallengeListVO();
+            vo.setId(c.getId());
+            vo.setInitiatorId(c.getInitiatorId());
+            vo.setBallroomId(c.getBallroomId());
+            vo.setBallType(c.getBallType());
+            vo.setFormatType(c.getFormatType());
+            vo.setFormatValue(c.getFormatValue());
+            vo.setStartTime(c.getStartTime());
+            vo.setMaxPlayers(c.getMaxPlayers());
+            vo.setRemark(c.getRemark());
+            vo.setStatus(c.getStatus());
+            vo.setScoreInitiator(c.getScoreInitiator());
+            vo.setScoreOpponent(c.getScoreOpponent());
+            vo.setWinnerId(c.getWinnerId());
+            vo.setCreateTime(c.getCreateTime());
+
+            User initiator = userMapper.selectById(c.getInitiatorId());
+            if (initiator != null) {
+                vo.setInitiatorName(initiator.getNickname());
+                vo.setInitiatorLevelScore(initiator.getLevelScore());
+            }
+
+            Ballroom ballroom = ballroomMapper.selectById(c.getBallroomId());
+            if (ballroom != null) {
+                vo.setBallroomName(ballroom.getName());
+            }
+
+            Long count = signupMapper.selectCount(
+                    new LambdaQueryWrapper<ChallengeSignup>()
+                            .eq(ChallengeSignup::getChallengeId, c.getId()));
+            vo.setSignupCount(count.intValue());
+
+            return vo;
+        }).collect(Collectors.toList()));
+
+        return voPage;
     }
 
     @Override
@@ -120,15 +144,12 @@ public class ChallengeServiceImpl implements ChallengeService {
         vo.setWinnerId(challenge.getWinnerId());
         vo.setCreateTime(challenge.getCreateTime());
 
-        // 发起人信息
         User initiator = userMapper.selectById(challenge.getInitiatorId());
         vo.setInitiator(initiator);
 
-        // 球房信息
         Ballroom ballroom = ballroomMapper.selectById(challenge.getBallroomId());
         vo.setBallroom(ballroom);
 
-        // 报名列表
         List<SignupUserVO> signups = signupService.getSignupsByChallengeId(id);
         vo.setSignups(signups);
 
@@ -173,7 +194,6 @@ public class ChallengeServiceImpl implements ChallengeService {
         challenge.setStatus(Constants.CHALLENGE_FINISHED);
         challengeMapper.updateById(challenge);
 
-        // 更新双方战绩
         if (winnerId != null) {
             User winner = userMapper.selectById(winnerId);
             if (winner != null) {
@@ -181,7 +201,6 @@ public class ChallengeServiceImpl implements ChallengeService {
                 winner.setLevelScore(winner.getLevelScore() + 10);
                 userMapper.updateById(winner);
             }
-            // 输家扣分
             Long loserId = challenge.getInitiatorId().equals(winnerId)
                     ? getOpponentId(challenge) : challenge.getInitiatorId();
             if (loserId != null) {
@@ -202,10 +221,10 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .orderByDesc(Challenge::getCreateTime);
 
         switch (type) {
-            case 1: // 我发起的
+            case 1:
                 wrapper.eq(Challenge::getInitiatorId, userId);
                 break;
-            case 2: { // 我参加的
+            case 2: {
                 List<Long> challengeIds = signupMapper.selectList(
                         new LambdaQueryWrapper<ChallengeSignup>()
                                 .eq(ChallengeSignup::getUserId, userId)
@@ -218,7 +237,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 wrapper.in(Challenge::getId, challengeIds);
                 break;
             }
-            case 3: // 历史的（我发起或参加的已完成/已取消）
+            case 3:
                 wrapper.and(w -> w.eq(Challenge::getInitiatorId, userId)
                         .or().in(Challenge::getId,
                                 signupMapper.selectList(
@@ -235,7 +254,6 @@ public class ChallengeServiceImpl implements ChallengeService {
         return challengeMapper.selectPage(challengePage, wrapper);
     }
 
-    /** 获取对手ID */
     private Long getOpponentId(Challenge challenge) {
         List<ChallengeSignup> signups = signupMapper.selectList(
                 new LambdaQueryWrapper<ChallengeSignup>()
@@ -244,16 +262,3 @@ public class ChallengeServiceImpl implements ChallengeService {
         return signups.isEmpty() ? null : signups.get(0).getUserId();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

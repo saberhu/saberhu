@@ -1,17 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ============================================================
 // 约战详情 - 信息展示、报名/取消、确认/拒绝、记分入口
 // ============================================================
@@ -30,7 +16,7 @@ Page({
   },
 
   onLoad(options) {
-    this.setData({ id: options.id });
+    this.setData({ id: parseInt(options.id) });
     this.loadDetail();
   },
 
@@ -43,8 +29,8 @@ Page({
   async loadDetail() {
     this.setData({ loading: true });
     try {
-      const challenge = await get(`/challenge/${this.data.id}`);
       const userId = wx.getStorageSync('userId');
+      const challenge = await get(`/challenge/${this.data.id}`, { userId });
       const isInitiator = userId && challenge.initiatorId === userId;
       const hasSigned = challenge.signups && challenge.signups.some(s => s.userId === userId);
 
@@ -69,7 +55,7 @@ Page({
       return;
     }
     try {
-      await post(`/challenge/${this.data.id}/signup`, { userId });
+      await post(`/challenge/${this.data.id}/signup`, {}, { header: { userId } });
       wx.showToast({ title: '报名成功', icon: 'success' });
       this.loadDetail();
     } catch (err) {
@@ -81,7 +67,7 @@ Page({
   async cancelSignup() {
     const userId = wx.getStorageSync('userId');
     try {
-      await post(`/challenge/${this.data.id}/cancelSignup`, { userId });
+      await post(`/challenge/${this.data.id}/signup/cancel`, {}, { header: { userId } });
       wx.showToast({ title: '已取消报名', icon: 'success' });
       this.loadDetail();
     } catch (err) {
@@ -97,7 +83,7 @@ Page({
       success: async (res) => {
         if (res.confirm) {
           try {
-            await post(`/challenge/${this.data.id}/cancel`, { userId: wx.getStorageSync('userId') });
+            await post(`/challenge/${this.data.id}/cancel`, {}, { header: { userId: wx.getStorageSync('userId') } });
             wx.showToast({ title: '已取消', icon: 'success' });
             this.loadDetail();
           } catch (err) {
@@ -111,8 +97,9 @@ Page({
   /** 确认报名（发起人） */
   async confirmSignup(e) {
     const signupId = e.currentTarget.dataset.id;
+    const userId = wx.getStorageSync('userId');
     try {
-      await post(`/challenge/signup/${signupId}/confirm`);
+      await post(`/challenge/${this.data.id}/signup/confirm`, { signupId }, { header: { userId } });
       wx.showToast({ title: '已确认', icon: 'success' });
       this.loadDetail();
     } catch (err) {
@@ -123,8 +110,9 @@ Page({
   /** 拒绝报名（发起人） */
   async rejectSignup(e) {
     const signupId = e.currentTarget.dataset.id;
+    const userId = wx.getStorageSync('userId');
     try {
-      await post(`/challenge/signup/${signupId}/reject`);
+      await post(`/challenge/${this.data.id}/signup/reject`, { signupId }, { header: { userId } });
       wx.showToast({ title: '已拒绝', icon: 'success' });
       this.loadDetail();
     } catch (err) {
@@ -148,16 +136,3 @@ Page({
     return app.getLevelName(score || 0).name;
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-

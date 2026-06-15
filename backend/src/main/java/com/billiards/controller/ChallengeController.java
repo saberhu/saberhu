@@ -1,20 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package com.billiards.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,6 +5,7 @@ import com.billiards.common.Result;
 import com.billiards.dto.ChallengeCreateDTO;
 import com.billiards.dto.ChallengeDetailVO;
 import com.billiards.dto.ChallengeFinishDTO;
+import com.billiards.dto.ChallengeListVO;
 import com.billiards.dto.SignupHandleDTO;
 import com.billiards.entity.Challenge;
 import com.billiards.service.ChallengeService;
@@ -61,10 +45,10 @@ public class ChallengeController {
      * GET /api/challenge/page?page=1&size=10&ballType=&status=
      */
     @GetMapping("/page")
-    public Result<Page<Challenge>> page(@RequestParam(defaultValue = "1") Integer page,
-                                         @RequestParam(defaultValue = "10") Integer size,
-                                         @RequestParam(required = false) Integer ballType,
-                                         @RequestParam(required = false) Integer status) {
+    public Result<Page<ChallengeListVO>> page(@RequestParam(defaultValue = "1") Integer page,
+                                               @RequestParam(defaultValue = "10") Integer size,
+                                               @RequestParam(required = false) Integer ballType,
+                                               @RequestParam(required = false) Integer status) {
         return Result.success(challengeService.getChallengePage(page, size, ballType, status));
     }
 
@@ -119,6 +103,17 @@ public class ChallengeController {
     }
 
     /**
+     * 取消报名
+     * POST /api/challenge/{id}/signup/cancel
+     */
+    @PostMapping("/{id}/signup/cancel")
+    public Result<Void> cancelSignup(@RequestHeader("userId") Long userId,
+                                      @PathVariable Long id) {
+        signupService.cancelSignup(id, userId);
+        return Result.success();
+    }
+
+    /**
      * 确认报名
      * POST /api/challenge/{id}/signup/confirm
      */
@@ -155,19 +150,3 @@ public class ChallengeController {
         return Result.success(challengeService.getMyChallenges(userId, type, page, size));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

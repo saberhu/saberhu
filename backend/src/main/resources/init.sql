@@ -130,6 +130,18 @@ CREATE UNIQUE INDEX IF NOT EXISTS `idx_fav_unique` ON `ballroom_favorite`(`user_
 INSERT INTO `user` (`openid`, `nickname`, `avatar_url`, `level_score`, `wins`, `losses`, `credit_score`, `status`)
 VALUES ('mock_openid_admin', '测试球友', '', 1200, 10, 3, 100, 1);
 
+INSERT INTO `user` (`openid`, `nickname`, `avatar_url`, `level_score`, `wins`, `losses`, `credit_score`, `status`)
+VALUES ('mock_openid_zhang', '张教练', '', 1500, 25, 5, 100, 1);
+
+INSERT INTO `user` (`openid`, `nickname`, `avatar_url`, `level_score`, `wins`, `losses`, `credit_score`, `status`)
+VALUES ('mock_openid_li', '李球王', '', 1350, 18, 8, 100, 1);
+
+INSERT INTO `user` (`openid`, `nickname`, `avatar_url`, `level_score`, `wins`, `losses`, `credit_score`, `status`)
+VALUES ('mock_openid_wang', '王台球', '', 1100, 8, 6, 100, 1);
+
+INSERT INTO `user` (`openid`, `nickname`, `avatar_url`, `level_score`, `wins`, `losses`, `credit_score`, `status`)
+VALUES ('mock_openid_zhao', '赵一杆', '', 900, 5, 12, 100, 1);
+
 INSERT INTO `ballroom` (`name`, `address`, `phone`, `price_desc`, `business_hours`, `longitude`, `latitude`, `rating`, `rating_count`, `status`)
 VALUES ('阜阳星牌台球俱乐部', '颍州区清河路128号', '0558-1234567', '30元/小时', '09:00-02:00', 115.814, 32.891, 4.8, 56, 1);
 
@@ -139,16 +151,86 @@ VALUES ('绅士台球会所', '颍泉区人民路88号', '0558-7654321', '25元/
 INSERT INTO `ballroom` (`name`, `address`, `phone`, `price_desc`, `business_hours`, `longitude`, `latitude`, `rating`, `rating_count`, `status`)
 VALUES ('鼎力台球俱乐部', '颍东区北京路66号', '0558-5555666', '20元/小时', '09:30-00:00', 115.835, 32.905, 4.5, 42, 1);
 
+INSERT INTO `ballroom` (`name`, `address`, `phone`, `price_desc`, `business_hours`, `longitude`, `latitude`, `rating`, `rating_count`, `status`)
+VALUES ('金杆台球馆', '颍州区万达广场3楼', '0558-3334444', '35元/小时', '10:00-22:00', 115.808, 32.886, 4.7, 29, 1);
+
+INSERT INTO `ballroom` (`name`, `address`, `phone`, `price_desc`, `business_hours`, `longitude`, `latitude`, `rating`, `rating_count`, `status`)
+VALUES ('名仕台球休闲会所', '颍泉区颍州路56号', '0558-2221111', '28元/小时', '09:00-02:00', 115.828, 32.895, 4.4, 33, 1);
+
 INSERT INTO `challenge` (`initiator_id`, `ballroom_id`, `ball_type`, `format_type`, `format_value`, `start_time`, `max_players`, `remark`, `status`)
 VALUES (1, 1, 1, 1, 9, CURRENT_TIMESTAMP + 2, 2, '求虐！', 0);
 
 INSERT INTO `challenge` (`initiator_id`, `ballroom_id`, `ball_type`, `format_type`, `format_value`, `start_time`, `max_players`, `remark`, `status`)
-VALUES (1, 2, 2, 2, 100, CURRENT_TIMESTAMP + 5, 2, '斯诺克走起', 0);
+VALUES (2, 2, 2, 2, 100, CURRENT_TIMESTAMP + 5, 2, '斯诺克走起', 0);
 
+INSERT INTO `challenge` (`initiator_id`, `ballroom_id`, `ball_type`, `format_type`, `format_value`, `start_time`, `max_players`, `remark`, `status`)
+VALUES (3, 3, 1, 1, 13, CURRENT_TIMESTAMP + 1, 4, '双打缺两人', 0);
 
+INSERT INTO `challenge` (`initiator_id`, `ballroom_id`, `ball_type`, `format_type`, `format_value`, `start_time`, `max_players`, `remark`, `status`)
+VALUES (4, 4, 3, 1, 7, CURRENT_TIMESTAMP + 3, 2, '九球娱乐', 0);
 
+INSERT INTO `challenge` (`initiator_id`, `ballroom_id`, `ball_type`, `format_type`, `format_value`, `start_time`, `max_players`, `remark`, `status`)
+VALUES (5, 5, 1, 2, 60, CURRENT_TIMESTAMP + 4, 2, '下班后来一局', 0);
 
+INSERT INTO `challenge` (`initiator_id`, `ballroom_id`, `ball_type`, `format_type`, `format_value`, `start_time`, `max_players`, `remark`, `status`)
+VALUES (1, 3, 1, 1, 9, CURRENT_TIMESTAMP - 3, 2, '昨晚的局', 2);
 
+INSERT INTO `challenge` (`initiator_id`, `ballroom_id`, `ball_type`, `format_type`, `format_value`, `start_time`, `max_players`, `remark`, `status`)
+VALUES (2, 1, 2, 2, 90, CURRENT_TIMESTAMP - 7, 2, '上周斯诺克', 2);
 
+INSERT INTO `challenge` (`initiator_id`, `ballroom_id`, `ball_type`, `format_type`, `format_value`, `start_time`, `max_players`, `remark`, `status`)
+VALUES (3, 4, 1, 1, 11, CURRENT_TIMESTAMP - 1, 2, '临时有事取消', 3);
 
+INSERT INTO `challenge_signup` (`challenge_id`, `user_id`, `status`)
+VALUES (1, 2, 0);
 
+INSERT INTO `challenge_signup` (`challenge_id`, `user_id`, `status`)
+VALUES (2, 1, 1);
+
+INSERT INTO `challenge_signup` (`challenge_id`, `user_id`, `status`)
+VALUES (3, 1, 1);
+
+INSERT INTO `challenge_signup` (`challenge_id`, `user_id`, `status`)
+VALUES (3, 4, 0);
+
+INSERT INTO `challenge_signup` (`challenge_id`, `user_id`, `status`)
+VALUES (4, 5, 0);
+
+INSERT INTO `challenge_signup` (`challenge_id`, `user_id`, `status`)
+VALUES (6, 2, 1);
+
+INSERT INTO `challenge_signup` (`challenge_id`, `user_id`, `status`)
+VALUES (7, 1, 1);
+
+INSERT INTO `ballroom_review` (`ballroom_id`, `user_id`, `rating`, `content`)
+VALUES (1, 1, 5.0, '环境很好，球桌标准，推荐！');
+
+INSERT INTO `ballroom_review` (`ballroom_id`, `user_id`, `rating`, `content`)
+VALUES (1, 2, 4.5, '服务态度不错，就是价格稍贵');
+
+INSERT INTO `ballroom_review` (`ballroom_id`, `user_id`, `rating`, `content`)
+VALUES (2, 1, 4.0, '球桌保养一般，但氛围很好');
+
+INSERT INTO `ballroom_review` (`ballroom_id`, `user_id`, `rating`, `content`)
+VALUES (3, 3, 5.0, '性价比很高，经常来');
+
+INSERT INTO `ballroom_review` (`ballroom_id`, `user_id`, `rating`, `content`)
+VALUES (4, 4, 4.5, '新开的球馆，设施很新');
+
+INSERT INTO `ballroom_review` (`ballroom_id`, `user_id`, `rating`, `content`)
+VALUES (5, 5, 4.0, '位置好找，停车方便');
+
+INSERT INTO `ballroom_favorite` (`user_id`, `ballroom_id`)
+VALUES (1, 1);
+
+INSERT INTO `ballroom_favorite` (`user_id`, `ballroom_id`)
+VALUES (1, 3);
+
+INSERT INTO `ballroom_favorite` (`user_id`, `ballroom_id`)
+VALUES (2, 2);
+
+INSERT INTO `ballroom_favorite` (`user_id`, `ballroom_id`)
+VALUES (3, 3);
+
+INSERT INTO `ballroom_favorite` (`user_id`, `ballroom_id`)
+VALUES (4, 4);

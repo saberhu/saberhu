@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 // ============================================================
 // 发起约战 - 表单页
 // ============================================================
@@ -135,7 +124,6 @@ Page({
     this.setData({ submitting: true });
     try {
       const res = await post('/challenge/create', {
-        userId,
         ballroomId: this.data.ballroomId,
         ballType: this.data.ballType,
         formatType: this.data.formatType,
@@ -143,6 +131,8 @@ Page({
         startTime: this.data.startTime,
         maxPlayers: this.data.maxPlayers,
         remark: this.data.remark
+      }, {
+        header: { userId }
       });
       wx.showToast({ title: '发起成功', icon: 'success' });
       // 跳转到约战详情
@@ -154,11 +144,3 @@ Page({
     }
   }
 });
-
-
-
-
-
-
-
-

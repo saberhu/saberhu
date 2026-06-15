@@ -1,20 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package com.billiards.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -60,7 +43,6 @@ public class ChallengeSignupServiceImpl implements ChallengeSignupService {
             throw new BusinessException("发起人无需报名");
         }
 
-        // 检查是否已报名
         ChallengeSignup existing = signupMapper.selectOne(
                 new LambdaQueryWrapper<ChallengeSignup>()
                         .eq(ChallengeSignup::getChallengeId, challengeId)
@@ -74,6 +56,22 @@ public class ChallengeSignupServiceImpl implements ChallengeSignupService {
         signup.setUserId(userId);
         signup.setStatus(Constants.SIGNUP_PENDING);
         signupMapper.insert(signup);
+    }
+
+    @Override
+    @Transactional
+    public void cancelSignup(Long challengeId, Long userId) {
+        ChallengeSignup signup = signupMapper.selectOne(
+                new LambdaQueryWrapper<ChallengeSignup>()
+                        .eq(ChallengeSignup::getChallengeId, challengeId)
+                        .eq(ChallengeSignup::getUserId, userId));
+        if (signup == null) {
+            throw new BusinessException(404, "报名记录不存在");
+        }
+        if (signup.getStatus() == Constants.SIGNUP_CONFIRMED) {
+            throw new BusinessException("已确认的报名无法取消，请联系发起人");
+        }
+        signupMapper.deleteById(signup.getId());
     }
 
     @Override
@@ -92,7 +90,6 @@ public class ChallengeSignupServiceImpl implements ChallengeSignupService {
         signup.setStatus(Constants.SIGNUP_CONFIRMED);
         signupMapper.updateById(signup);
 
-        // 确认后自动将约战状态改为进行中
         if (challenge.getStatus() == Constants.CHALLENGE_PENDING) {
             challenge.setStatus(Constants.CHALLENGE_ONGOING);
             challengeMapper.updateById(challenge);
@@ -146,19 +143,3 @@ public class ChallengeSignupServiceImpl implements ChallengeSignupService {
                         .eq(ChallengeSignup::getUserId, userId)) > 0;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -17,15 +17,15 @@ Page({
   },
 
   onLoad(options) {
-    this.setData({ id: options.id });
+    this.setData({ id: parseInt(options.id) });
     this.loadDetail();
   },
 
   async loadDetail() {
     this.setData({ loading: true });
     try {
-      const challenge = await get(`/challenge/${this.data.id}`);
       const userId = wx.getStorageSync('userId');
+      const challenge = await get(`/challenge/${this.data.id}`, { userId });
       const isInitiator = userId && challenge.initiatorId === userId;
 
       this.setData({
@@ -74,10 +74,12 @@ Page({
         if (res.confirm) {
           this.setData({ submitting: true });
           try {
+            const userId = wx.getStorageSync('userId');
             await post(`/challenge/${this.data.id}/finish`, {
-              userId: wx.getStorageSync('userId'),
               scoreInitiator: this.data.scoreInitiator,
               scoreOpponent: this.data.scoreOpponent
+            }, {
+              header: { userId }
             });
             wx.showToast({ title: '比赛结束', icon: 'success' });
             wx.navigateBack();

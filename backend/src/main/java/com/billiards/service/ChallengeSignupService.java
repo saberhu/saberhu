@@ -1,20 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package com.billiards.service;
 
 import com.billiards.dto.SignupUserVO;
@@ -30,6 +13,11 @@ public interface ChallengeSignupService {
      * 报名约战
      */
     void signup(Long challengeId, Long userId);
+
+    /**
+     * 取消报名
+     */
+    void cancelSignup(Long challengeId, Long userId);
 
     /**
      * 确认报名
@@ -51,19 +39,3 @@ public interface ChallengeSignupService {
      */
     boolean isUserSignedUp(Long challengeId, Long userId);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

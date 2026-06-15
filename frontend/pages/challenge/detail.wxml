@@ -70,17 +70,17 @@
     <!-- 报名列表 -->
     <view class="section" wx:if="{{signups.length > 0}}">
       <text class="section-title">报名列表</text>
-      <view wx:for="{{signups}}" wx:key="id" class="signup-item">
+      <view wx:for="{{signups}}" wx:key="signupId" class="signup-item">
         <view class="signup-user">
-          <view class="signup-avatar">{{item.userName ? item.userName[0] : '?'}}</view>
-          <text class="signup-name">{{item.userName || '用户'}}</text>
+          <view class="signup-avatar">{{item.nickname ? item.nickname[0] : '?'}}</view>
+          <text class="signup-name">{{item.nickname || '用户'}}</text>
           <text class="signup-status {{item.status === 1 ? 'approved' : 'pending'}}">
             {{item.status === 1 ? '已确认' : '待确认'}}
           </text>
         </view>
         <view class="signup-actions" wx:if="{{isInitiator && item.status === 0}}">
-          <button class="action-btn confirm" bindtap="confirmSignup" data-id="{{item.id}}">确认</button>
-          <button class="action-btn reject" bindtap="rejectSignup" data-id="{{item.id}}">拒绝</button>
+          <button class="action-btn confirm" bindtap="confirmSignup" data-id="{{item.signupId}}">确认</button>
+          <button class="action-btn reject" bindtap="rejectSignup" data-id="{{item.signupId}}">拒绝</button>
         </view>
       </view>
     </view>
