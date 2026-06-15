@@ -1,4 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="750" height="300" viewBox="0 0 750 300">
-  <rect width="750" height="300" fill="#f57c00"/>
-  <text x="375" y="150" font-size="36" fill="white" text-anchor="middle" dominant-baseline="middle">约战好友 切磋球技</text>
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="glow2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e74c3c"/>
+      <stop offset="100%" style="stop-color:#f39c12"/>
+    </linearGradient>
+  </defs>
+  <rect width="750" height="300" fill="url(#bg2)"/>
+  <circle cx="100" cy="50" r="150" fill="rgba(255,255,255,0.02)"/>
+  <circle cx="680" cy="260" r="130" fill="rgba(255,255,255,0.02)"/>
+  <line x1="550" y1="220" x2="720" y2="80" stroke="rgba(255,255,255,0.06)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="555" y1="225" x2="715" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="530" cy="230" r="10" fill="#f5f5dc" opacity="0.9"/>
+  <text x="530" y="234" font-size="10" fill="#333" text-anchor="middle" font-weight="bold">8</text>
+  <circle cx="560" cy="210" r="9" fill="#e74c3c" opacity="0.85"/>
+  <circle cx="590" cy="225" r="9" fill="#f5f5dc" opacity="0.85"/>
+  <circle cx="620" cy="215" r="9" fill="#f5f5dc" opacity="0.85"/>
+  <circle cx="650" cy="230" r="9" fill="#f5f5dc" opacity="0.85"/>
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="white" letter-spacing="1">约战好友</text>
+  <text x="60" y="165" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="white" letter-spacing="1">切磋球技</text>
+  <text x="60" y="205" font-family="Arial, sans-serif" font-size="15" fill="rgba(255,255,255,0.55)" letter-spacing="1">创建约战 · 邀请好友 · 一决高下</text>
+  <rect x="60" y="230" width="130" height="36" rx="18" fill="url(#glow2)"/>
+  <text x="125" y="253" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">发起挑战</text>
+  <text x="420" y="80" font-size="12" fill="rgba(255,255,255,0.1)">&#10022;</text>
+  <text x="460" y="120" font-size="8" fill="rgba(255,255,255,0.08)">&#10022;</text>
 </svg>

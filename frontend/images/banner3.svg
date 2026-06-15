@@ -1,4 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="750" height="300" viewBox="0 0 750 300">
-  <rect width="750" height="300" fill="#2a3f6a"/>
-  <text x="375" y="150" font-size="36" fill="white" text-anchor="middle" dominant-baseline="middle">附近球房 一键导航</text>
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0b3d0b"/>
+      <stop offset="50%" style="stop-color:#1a5c1a"/>
+      <stop offset="100%" style="stop-color:#0d2818"/>
+    </linearGradient>
+    <linearGradient id="glow3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#11998e"/>
+      <stop offset="100%" style="stop-color:#38ef7d"/>
+    </linearGradient>
+  </defs>
+  <rect width="750" height="300" fill="url(#bg3)"/>
+  <circle cx="680" cy="40" r="140" fill="rgba(255,255,255,0.02)"/>
+  <circle cx="80" cy="280" r="110" fill="rgba(255,255,255,0.02)"/>
+  <!-- 地图标记装饰 -->
+  <path d="M600 80 Q600 50 620 50 Q640 50 640 80 Q640 110 620 140 Q600 110 600 80Z" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <circle cx="620" cy="80" r="8" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <circle cx="620" cy="80" r="3" fill="rgba(255,255,255,0.1)"/>
+  <!-- 路径线 -->
+  <path d="M520 200 Q560 170 600 190 Q640 210 680 180" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2" stroke-dasharray="6,4"/>
+  <circle cx="520" cy="200" r="4" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="680" cy="180" r="4" fill="rgba(255,255,255,0.08)"/>
+  <!-- 主标题 -->
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="white" letter-spacing="1">附近球房</text>
+  <text x="60" y="165" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="white" letter-spacing="1">一键导航</text>
+  <!-- 副标题 -->
+  <text x="60" y="205" font-family="Arial, sans-serif" font-size="15" fill="rgba(255,255,255,0.55)" letter-spacing="1">发现身边的台球室 · 随时开打</text>
+  <!-- 按钮 -->
+  <rect x="60" y="230" width="130" height="36" rx="18" fill="url(#glow3)"/>
+  <text x="125" y="253" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0d2818" text-anchor="middle">查看地图</text>
+  <!-- 装饰 -->
+  <text x="400" y="70" font-size="12" fill="rgba(255,255,255,0.1)">&#10022;</text>
+  <text x="440" y="110" font-size="8" fill="rgba(255,255,255,0.08)">&#10022;</text>
 </svg>
