@@ -48,7 +48,7 @@
   <view class="section">
     <view class="section-header">
       <text class="section-title">🔥 附近正在约战</text>
-      <text class="section-more" bindtap="goChallengeList">更多 &gt;</text>
+      <text class="section-more" bindtap="goChallengeList">更多 <image src="/images/icons/arrow-right.svg" class="arrow-icon"/></text>
     </view>
     <view wx:if="{{challenges.length === 0}}" class="empty-state-small">暂无约战，快去发起吧</view>
     <view wx:for="{{challenges}}" wx:key="id" class="challenge-card" bindtap="goChallenge" data-id="{{item.id}}">
@@ -77,7 +77,7 @@
   <view class="section">
     <view class="section-header">
       <text class="section-title">🏆 热门球房推荐</text>
-      <text class="section-more" bindtap="goBallroomMap">更多 &gt;</text>
+      <text class="section-more" bindtap="goBallroomMap">更多 <image src="/images/icons/arrow-right.svg" class="arrow-icon"/></text>
     </view>
     <view wx:if="{{ballrooms.length === 0}}" class="empty-state-small">暂无球房数据</view>
     <view wx:for="{{ballrooms}}" wx:key="id" class="ballroom-card" bindtap="goBallroom" data-id="{{item.id}}">

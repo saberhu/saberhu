@@ -21,7 +21,7 @@
       <picker bindchange="onBallroomChange" range="{{ballrooms}}" range-key="name" value="{{ballroomIndex}}">
         <view class="picker {{ballroomName ? '' : 'placeholder'}}">
           {{ballroomName || '请选择球房'}}
-          <text class="picker-arrow">&gt;</text>
+          <image src="/images/icons/arrow-right.svg" class="picker-arrow"/>
         </view>
       </picker>
     </view>
@@ -32,7 +32,7 @@
       <picker mode="selector" range="{{ballTypes}}" range-key="label" bindchange="onBallTypeChange">
         <view class="picker">
           {{ballTypes[ballType - 1].label}}
-          <text class="picker-arrow">&gt;</text>
+          <image src="/images/icons/arrow-right.svg" class="picker-arrow"/>
         </view>
       </picker>
     </view>
@@ -43,7 +43,7 @@
       <picker mode="selector" range="{{formatTypes}}" range-key="label" bindchange="onFormatTypeChange">
         <view class="picker">
           {{formatTypes[formatType - 1].label}}
-          <text class="picker-arrow">&gt;</text>
+          <image src="/images/icons/arrow-right.svg" class="picker-arrow"/>
         </view>
       </picker>
     </view>
@@ -60,7 +60,7 @@
       <picker mode="date" bindchange="onStartTimeChange">
         <view class="picker {{startTimeDisplay ? '' : 'placeholder'}}">
           {{startTimeDisplay || '请选择日期'}}
-          <text class="picker-arrow">&gt;</text>
+          <image src="/images/icons/arrow-right.svg" class="picker-arrow"/>
         </view>
       </picker>
     </view>
