@@ -13,9 +13,9 @@ Page({
     keyword: '',
     /** 轮播图列表 */
     swiperList: [
-      { id: 1, image: 'https://via.placeholder.com/750x300/1a2a4a/fff?text=阜阳台球约战' },
-      { id: 2, image: 'https://via.placeholder.com/750x300/f57c00/fff?text=约战好友+切磋球技' },
-      { id: 3, image: 'https://via.placeholder.com/750x300/2a3f6a/fff?text=附近球房+一键导航' }
+      { id: 1, image: '/images/banner1.svg' },
+      { id: 2, image: '/images/banner2.svg' },
+      { id: 3, image: '/images/banner3.svg' }
     ],
     /** 附近约战列表 */
     challenges: [],
