@@ -8,6 +8,7 @@ const app = getApp();
 Page({
   data: {
     ballroom: null,
+    ballroomStars: '',
     reviews: [],
     isFavorite: false,
     loading: true,
@@ -15,6 +16,14 @@ Page({
     showReviewForm: false,
     reviewRating: 5,
     reviewContent: ''
+  },
+
+  /** 生成星星字符串 */
+  getStars(rating) {
+    const count = Math.round(rating || 0);
+    let s = '';
+    for (let i = 0; i < count; i++) s += '⭐';
+    return s;
   },
 
   onLoad(options) {
@@ -50,7 +59,8 @@ Page({
 
       this.setData({
         ballroom,
-        reviews: reviews.records || [],
+        ballroomStars: this.getStars(ballroom.rating),
+        reviews: (reviews.records || []).map(item => ({ ...item, reviewStars: this.getStars(item.rating) })),
         isFavorite
       });
     } catch (err) {
