@@ -21,7 +21,7 @@ Page({
     wx.setStorageSync('userId', id);
     wx.showToast({ title: `已登录为 ${nickname}`, icon: 'success', duration: 1500 });
     setTimeout(() => {
-      wx.switchTab({ url: '/pages/challenge/challenge' });
+      wx.switchTab({ url: '/pages/index/index' });
     }, 1500);
   }
 });
