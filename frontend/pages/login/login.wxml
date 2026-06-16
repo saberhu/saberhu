@@ -4,7 +4,7 @@
      ============================================================ -->
 <view class="page">
   <view class="header">
-    <image class="logo" src="/images/logo.png" mode="aspectFit"/>
+    <image class="logo" src="/images/logo.svg" mode="aspectFit"/>
     <text class="title">台球约战</text>
     <text class="subtitle">请选择测试账号登录</text>
   </view>
