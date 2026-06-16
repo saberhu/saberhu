@@ -125,6 +125,28 @@ CREATE INDEX IF NOT EXISTS `idx_fav_ballroom` ON `ballroom_favorite`(`ballroom_i
 CREATE UNIQUE INDEX IF NOT EXISTS `idx_fav_unique` ON `ballroom_favorite`(`user_id`, `ballroom_id`);
 
 -- ----------------------------
+-- 7. 管理员表
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `admin` (
+    `id` BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+    `username` VARCHAR(64) NOT NULL COMMENT '用户名',
+    `password` VARCHAR(64) NOT NULL COMMENT '密码(MD5)',
+    `nickname` VARCHAR(64) DEFAULT '' COMMENT '昵称',
+    `role` VARCHAR(16) DEFAULT 'admin' COMMENT '角色 super-超级管理员 admin-普通管理员',
+    `status` TINYINT DEFAULT 1 COMMENT '状态 1-正常 0-禁用',
+    `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间'
+);
+CREATE UNIQUE INDEX IF NOT EXISTS `idx_admin_username` ON `admin`(`username`);
+
+-- 默认管理员账号（密码均为 admin123 的 MD5）
+INSERT INTO `admin` (`username`, `password`, `nickname`, `role`, `status`)
+VALUES ('admin', '0192023a7bbd73250516f069df18b500', '超级管理员', 'super', 1);
+
+INSERT INTO `admin` (`username`, `password`, `nickname`, `role`, `status`)
+VALUES ('manager', '0192023a7bbd73250516f069df18b500', '运营管理员', 'admin', 1);
+
+-- ----------------------------
 -- 测试数据
 -- ----------------------------
 INSERT INTO `user` (`openid`, `nickname`, `avatar_url`, `level_score`, `wins`, `losses`, `credit_score`, `status`)

@@ -1,18 +1,19 @@
-
-
-
-
-
-
-
-
-
 server:
   port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 spring:
   profiles:
     active: dev
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
@@ -59,11 +60,3 @@ spring:
   h2:
     console:
       enabled: false
-
-
-
-
-
-
-
-
