@@ -34,7 +34,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:mem:billiards;DB_CLOSE_DELAY=-1;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER
+    url: jdbc:h2:mem:billiards;DB_CLOSE_DELAY=-1;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER;IGNORECASE=TRUE
     driver-class-name: org.h2.Driver
     username: sa
     password:
