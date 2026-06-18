@@ -28,13 +28,14 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 
+
 ---
 spring:
   config:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:mem:billiards;DB_CLOSE_DELAY=-1;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER;IGNORECASE=TRUE
+    url: jdbc:h2:file:./data/billiards;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER;IGNORECASE=TRUE;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
     username: sa
     password:
