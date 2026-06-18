@@ -6,10 +6,12 @@
     "pages/challenge/create",
     "pages/challenge/detail",
     "pages/challenge/score",
-    "pages/ballroom/map",
+    "pages/ballroom/ballroom",
     "pages/ballroom/detail",
+    "pages/ballroom/map",
     "pages/user/profile"
   ],
+
   "window": {
     "navigationBarBackgroundColor": "#1a2a4a",
     "navigationBarTitleText": "阜阳台球约战",
@@ -34,7 +36,7 @@
         "selectedIconPath": "images/challenge_active.png"
       },
       {
-        "pagePath": "pages/ballroom/map",
+        "pagePath": "pages/ballroom/ballroom",
         "text": "球房",
         "iconPath": "images/ballroom.png",
         "selectedIconPath": "images/ballroom_active.png"

@@ -50,7 +50,7 @@ Page({
       let isFavorite = false;
       if (userId) {
         try {
-          const favRes = await get(`/ballroom/favorite/check`, { userId, ballroomId: this.data.id }, { showLoading: false });
+          const favRes = await get(`/ballroom/${this.data.id}/favorite/check`, { userId }, { showLoading: false });
           isFavorite = favRes.favorited || false;
         } catch (e) {
           // ignore
@@ -91,7 +91,7 @@ Page({
       return;
     }
     try {
-      await post('/ballroom/favorite', { userId, ballroomId: this.data.id });
+      await post(`/ballroom/${this.data.id}/favorite`, { userId });
       this.setData({ isFavorite: !this.data.isFavorite });
       wx.showToast({
         title: this.data.isFavorite ? '已收藏' : '已取消收藏',
@@ -142,7 +142,6 @@ Page({
     }
     try {
       await post('/ballroom/review', {
-        userId: wx.getStorageSync('userId'),
         ballroomId: this.data.id,
         rating: this.data.reviewRating,
         content: this.data.reviewContent.trim()

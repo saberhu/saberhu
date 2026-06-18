@@ -1,6 +1,3 @@
-
-
-
 // ============================================================
 // 首页 - 搜索栏、轮播图、快捷入口、约战列表、球房推荐
 // ============================================================
@@ -32,7 +29,6 @@ Page({
   },
 
   onShow() {
-    // 如果数据为空则刷新
     if (this.data.challenges.length === 0) {
       this.loadData();
     }
@@ -48,7 +44,6 @@ Page({
   async loadData() {
     this.setData({ loading: true });
     try {
-      // 并行请求
       const [challenges, ballrooms] = await Promise.all([
         get('/challenge/page', { page: 1, size: 5, status: 0 }),
         get('/ballroom/page', { page: 1, size: 3, sortBy: 'rating' })
@@ -91,7 +86,7 @@ Page({
 
   /** 附近球房 */
   goBallroomMap() {
-    wx.switchTab({ url: '/pages/ballroom/map' });
+    wx.navigateTo({ url: '/pages/ballroom/map' });
   },
 
   /** 我的战绩 */
@@ -99,7 +94,6 @@ Page({
     wx.switchTab({ url: '/pages/user/profile' });
   },
 
-  /** 格式化时间 */
   formatTime(time) {
     if (!time) return '';
     return time.replace('T', ' ').substring(0, 16);
@@ -110,5 +104,3 @@ Page({
     return app.getLevelName(score).name;
   }
 });
-
-
