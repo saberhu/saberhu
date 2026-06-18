@@ -140,13 +140,16 @@ public class ChallengeController {
     /**
      * 我的约战列表
      * GET /api/challenge/my/{userId}?type=1&page=1&size=10
+     * GET /api/challenge/my?userId=3&page=1&size=20
      * type: 1-我发起的 2-我参加的 3-历史的
      */
-    @GetMapping("/my/{userId}")
-    public Result<Page<Challenge>> myChallenges(@PathVariable Long userId,
+    @GetMapping({"/my/{userId}", "/my"})
+    public Result<Page<Challenge>> myChallenges(@PathVariable(required = false) Long userId,
+                                                  @RequestParam(required = false) Long userIdParam,
                                                   @RequestParam(defaultValue = "1") Integer type,
                                                   @RequestParam(defaultValue = "1") Integer page,
                                                   @RequestParam(defaultValue = "10") Integer size) {
-        return Result.success(challengeService.getMyChallenges(userId, type, page, size));
+        Long id = userId != null ? userId : userIdParam;
+        return Result.success(challengeService.getMyChallenges(id, type, page, size));
     }
 }
