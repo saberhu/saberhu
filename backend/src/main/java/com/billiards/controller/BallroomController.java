@@ -109,6 +109,15 @@ public class BallroomController {
     }
 
     /**
+     * 用户收藏列表（前端兼容）
+     * GET /api/ballroom/favorite/list?userId=3
+     */
+    @GetMapping("/favorite/list")
+    public Result<List<Ballroom>> favoriteList(@RequestParam Long userId) {
+        return Result.success(ballroomService.getUserFavorites(userId));
+    }
+
+    /**
      * 热门球房推荐
      * GET /api/ballroom/hot?limit=5
      */
