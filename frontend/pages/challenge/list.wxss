@@ -1,42 +1,40 @@
-
-
-
 /* ============================================================
    约战广场样式
    ============================================================ */
 
+.page {
+  background: var(--bg-color);
+  min-height: 100vh;
+}
+
 /* 筛选Tab */
 .filter-tabs {
   display: flex;
-  background: #fff;
   padding: 10px 16px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  background: #fff;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .filter-tab {
   padding: 6px 16px;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
-  margin-right: 8px;
   border-radius: 16px;
   background: var(--bg-color);
 }
 
 .filter-tab.active {
-  color: #fff;
   background: var(--primary);
+  color: #fff;
   font-weight: 500;
 }
 
-/* 列表区域 */
+/* 列表 */
 .list-wrap {
   padding: 12px 0;
 }
 
-/* 约战卡片 */
 .challenge-card {
   margin-bottom: 10px;
 }
@@ -54,16 +52,17 @@
 }
 
 .challenge-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--primary);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  margin-right: 10px;
+  font-size: 14px;
+  margin-right: 8px;
+  flex-shrink: 0;
 }
 
 .challenge-user-info {
@@ -72,45 +71,37 @@
 }
 
 .challenge-nickname {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
+  color: var(--text-color);
 }
 
 .challenge-level {
-  margin-top: 2px;
-  align-self: flex-start;
+  font-size: 11px;
+  color: var(--text-secondary);
 }
 
-/* 标签行 */
 .challenge-tags {
   display: flex;
-  margin-bottom: 8px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 
-.challenge-tags .tag {
-  margin-right: 8px;
-}
-
-/* 信息行 */
 .challenge-info {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 8px;
+  justify-content: space-between;
+  margin-bottom: 6px;
 }
 
 .info-item {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
-  margin-bottom: 2px;
 }
 
-/* 底部 */
 .challenge-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 8px;
-  border-top: 1px solid var(--border-color);
 }
 
 .challenge-remark {
@@ -128,11 +119,27 @@
   flex-shrink: 0;
 }
 
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.empty-icon {
+  font-size: 40px;
+}
+
 /* 悬浮按钮 */
 .float-btn {
   position: fixed;
-  right: 24px;
-  bottom: 100px;
+  right: 20px;
+  bottom: 30px;
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -142,21 +149,10 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4);
-  z-index: 100;
+  z-index: 10;
 }
 
 .float-btn-icon {
   font-size: 28px;
-  font-weight: 300;
   line-height: 1;
 }
-
-/* 空状态图标 */
-.empty-icon {
-  font-size: 48px;
-  display: block;
-  margin-bottom: 12px;
-}
-
-
-

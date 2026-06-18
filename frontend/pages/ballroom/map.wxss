@@ -71,6 +71,7 @@
 .ballroom-name {
   font-size: 15px;
   font-weight: 600;
+  color: var(--text-color);
 }
 
 .ballroom-rating {

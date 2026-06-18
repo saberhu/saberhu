@@ -1,30 +1,18 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ============================================================
    约战详情样式
    ============================================================ */
 .page {
   padding: 16px;
   padding-bottom: 100px;
+  background: var(--bg-color);
+  min-height: 100vh;
 }
 
 .detail-card {
   background: #fff;
   border-radius: 12px;
   padding: 16px;
+  margin-bottom: 12px;
   box-shadow: var(--card-shadow);
 }
 
@@ -32,9 +20,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 12px;
 }
 
 .header-left {
@@ -44,8 +30,9 @@
 }
 
 .ball-type {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
+  color: var(--text-color);
 }
 
 .challenge-id {
@@ -57,22 +44,24 @@
 .initiator-section {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 12px;
+  background: var(--bg-color);
+  border-radius: 10px;
+  margin-bottom: 12px;
 }
 
 .initiator-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--primary);
+  background: var(--accent);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   margin-right: 12px;
+  flex-shrink: 0;
 }
 
 .initiator-info {
@@ -83,23 +72,23 @@
 .initiator-name {
   font-size: 15px;
   font-weight: 500;
+  color: var(--text-color);
 }
 
 .initiator-level {
+  font-size: 11px;
   margin-top: 2px;
-  align-self: flex-start;
 }
 
-/* 信息列表 */
+/* 详细信息 */
 .info-list {
   margin-bottom: 12px;
 }
 
 .info-row {
   display: flex;
-  justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .info-row:last-child {
@@ -107,20 +96,20 @@
 }
 
 .info-label {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
+  width: 80px;
+  flex-shrink: 0;
 }
 
 .info-value {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-color);
-  text-align: right;
-  max-width: 60%;
+  flex: 1;
 }
 
-/* 比分展示 */
+/* 比分 */
 .score-section {
-  margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid var(--border-color);
 }
@@ -128,9 +117,10 @@
 .score-title {
   font-size: 14px;
   font-weight: 500;
+  color: var(--text-color);
   display: block;
-  margin-bottom: 10px;
   text-align: center;
+  margin-bottom: 8px;
 }
 
 .score-display {
@@ -145,7 +135,7 @@
 }
 
 .score-name {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
   display: block;
   margin-bottom: 4px;
@@ -164,20 +154,21 @@
 
 /* 报名列表 */
 .section {
-  margin-top: 16px;
+  margin-bottom: 12px;
 }
 
 .section-title {
   font-size: 15px;
   font-weight: 600;
+  color: var(--text-color);
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .signup-item {
   background: #fff;
   border-radius: 10px;
-  padding: 12px 16px;
+  padding: 12px;
   margin-bottom: 8px;
   box-shadow: var(--card-shadow);
 }
@@ -185,36 +176,38 @@
 .signup-user {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
 }
 
 .signup-avatar {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--primary-light);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  margin-right: 8px;
+  font-size: 14px;
+  margin-right: 10px;
+  flex-shrink: 0;
 }
 
 .signup-name {
-  font-size: 14px;
   flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
 }
 
 .signup-status {
   font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 8px;
+  padding: 2px 10px;
+  border-radius: 10px;
 }
 
 .signup-status.approved {
   background: #e8f5e9;
-  color: var(--success);
+  color: #2e7d32;
 }
 
 .signup-status.pending {
@@ -224,16 +217,19 @@
 
 .signup-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
 }
 
 .action-btn {
   flex: 1;
-  padding: 6px 0;
+  padding: 8px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 13px;
-  text-align: center;
+  font-weight: 500;
 }
 
 .action-btn.confirm {
@@ -253,6 +249,7 @@
   left: 0;
   right: 0;
   padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
   background: #fff;
   border-top: 1px solid var(--border-color);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
@@ -297,23 +294,3 @@
   font-size: 14px;
   padding: 14px 0;
 }
-
-.loading-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text-secondary);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
